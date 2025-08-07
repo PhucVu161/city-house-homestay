@@ -13,8 +13,7 @@ app.use(express.json());
 connectDB();
 
 // Routes
-app.use("/api/auth", authRoute);
-// app.use('/api/auth', require('./routes/auth'));
+app.use("/auth", authRoute);
 // app.use('/api/rooms', require('./routes/rooms'));
 // app.use('/api/bookings', require('./routes/bookings'));
 
