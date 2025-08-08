@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const [isUser, setIsUser] = useState(true);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   return (
     <div className="text-center bg-gray-400 flex justify-between p-3">
       <div>icon</div>
@@ -13,7 +14,7 @@ export default function Header() {
         <div>
           <Link to="/about">About</Link>
         </div>
-        {isUser && (
+        {isAuthenticated && user && !user.isAdmin && (
           <>
             <div>
               <Link to="/booking">Booking</Link>
@@ -22,7 +23,7 @@ export default function Header() {
         )}
       </div>
       <div className="flex gap-4">
-        {isUser ? (
+        {(isAuthenticated && user && !user.isAdmin )? (
           <div>
             <Link to="/profile">Welcome user</Link>
           </div>
@@ -32,7 +33,7 @@ export default function Header() {
               <Link to="/login">Login</Link>
             </div>
             <div>
-              <Link to="register">Register</Link>
+              <Link to="/register">Register</Link>
             </div>
           </>
         )}

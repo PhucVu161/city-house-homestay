@@ -20,9 +20,9 @@ export const registerUser = async (req, res) => {
     res.status(201).json(user); // Dùng 201 cho tạo mới
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).json({ error: "Username or email already exists" });
+      return res.status(400).json({ message: "Username or email already exists" });
     }
-    res.status(500).json({ error: "Failed to register user" });
+    res.status(500).json({ message: "Failed to register user" });
   }
 };
 
@@ -34,7 +34,7 @@ const generateAccessToken = (user) => {
   return jwt.sign(
     { id: user.id, isAdmin: user.isAdmin },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" } // Giảm thời gian hết hạn
+    { expiresIn: "7d" } // Giảm thời gian hết hạn
   );
 };
 
@@ -43,27 +43,34 @@ export const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(401).json({ error: "Invalid username" });
+      return res.status(401).json({ message: "Invalid username" });
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     // Generate access token
     const accessToken = generateAccessToken(user);
     const { password, ...others } = user._doc;
-    res.status(200).json({ ...others, accessToken });
+    res.status(200).json({ user: others, token: accessToken });
   } catch (err) {
-    res.status(500).json({ error: "Failed to login" });
+    res.status(500).json({ message: "Failed to login" });
   }
 };
+
+// CURRENT USER
+export const currentUser = async (req, res) => {
+  const currentUser = await User.findById(req.user.id).select('-password'); // bỏ password nếu có
+  if (!currentUser) return res.status(404).json({ message: 'User not found' });
+  res.json(currentUser);
+}
 
 // LOG OUT
 export const logOut = async (req, res) => {
   try {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    res.status(500).json({ error: "Failed to logout" });
+    res.status(500).json({ message: "Failed to logout" });
   }
 };
