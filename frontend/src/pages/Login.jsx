@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/slices/authSlice";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -33,6 +33,12 @@ export default function Login() {
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center">
+      <Link
+        to="/"
+        className="fixed top-4 left-4 bg-white px-3 py-1 rounded shadow hover:bg-gray-100 transition-colors duration-200"
+      >
+        ← Back home
+      </Link>
       <form
         className="w-[400px] h-[300px] rounded-md bg-gray-200 flex flex-col justify-center items-center gap-3"
         onSubmit={handleSubmit}
@@ -58,7 +64,10 @@ export default function Login() {
           />
         </div>
         <div>
-          {loading && <span>Đang đăng nhập</span>}
+          Bạn chưa có tài khoản. Vui lòng <Link to={"/register"} className="underline">đăng ký</Link>
+        </div>
+        <div>
+          {loading && <span>Đang đăng nhập...</span>}
           {error && <span>Đăng nhập thất bại {error}</span>}
         </div>
         <button className="bg-sky-500 w-46 active:bg-sky-300">Login</button>

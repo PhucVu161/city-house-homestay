@@ -2,6 +2,18 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+// Generate access token
+const generateAccessToken = (user) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+  return jwt.sign(
+    { id: user.id, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" } // Giảm thời gian hết hạn
+  );
+};
+
 // REGISTER
 export const registerUser = async (req, res) => {
   try {
@@ -17,25 +29,22 @@ export const registerUser = async (req, res) => {
 
     // Save user to DB
     const user = await newUser.save();
-    res.status(201).json(user); // Dùng 201 cho tạo mới
+
+    // Generate access token
+    const accessToken = generateAccessToken(user);
+
+    // Remove password before sending response
+    const { password, ...userWithoutPassword } = user._doc;
+
+    res.status(201).json({ user: userWithoutPassword, token: accessToken }); // Dùng 201 cho tạo mới
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).json({ message: "Username or email already exists" });
+      return res
+        .status(400)
+        .json({ message: "Username or email already exists" });
     }
     res.status(500).json({ message: "Failed to register user" });
   }
-};
-
-// Generate access token
-const generateAccessToken = (user) => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined");
-  }
-  return jwt.sign(
-    { id: user.id, isAdmin: user.isAdmin },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" } // Giảm thời gian hết hạn
-  );
 };
 
 // LOGIN
@@ -45,7 +54,10 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid username" });
     }
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -61,16 +73,7 @@ export const loginUser = async (req, res) => {
 
 // CURRENT USER
 export const currentUser = async (req, res) => {
-  const currentUser = await User.findById(req.user.id).select('-password'); // bỏ password nếu có
-  if (!currentUser) return res.status(404).json({ message: 'User not found' });
+  const currentUser = await User.findById(req.user.id).select("-password"); // bỏ password nếu có
+  if (!currentUser) return res.status(404).json({ message: "User not found" });
   res.json(currentUser);
-}
-
-// LOG OUT
-export const logOut = async (req, res) => {
-  try {
-    res.status(200).json({ message: "Logged out successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to logout" });
-  }
 };

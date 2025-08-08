@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   return (
-    <div className="text-center bg-gray-400 flex justify-between p-3">
+    <div className="fixed w-full text-center bg-gray-400 flex justify-between items-center p-1">
       <div>icon</div>
       <div className="flex gap-4">
         <div>
@@ -23,9 +26,33 @@ export default function Header() {
         )}
       </div>
       <div className="flex gap-4">
-        {(isAuthenticated && user && !user.isAdmin )? (
-          <div>
-            <Link to="/profile">Welcome user</Link>
+        {isAuthenticated && user && !user.isAdmin ? (
+          <div
+            className="relative hover:bg-orange-300 p-2 rounded-2xl cursor-pointer transition-colors duration-200 select-none"
+            onClick={() => setIsOpen((pre) => !pre)}
+          >
+            <div className="font-semibold">Welcome {user.username}</div>
+
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 z-20">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150"
+                >
+                  Profile
+                </Link>
+                <div
+                  className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150 cursor-pointer"
+                  onClick={() => {
+                    // Xử lý logout ở đây
+                    dispatch(logout());
+                    console.log("Logout clicked");
+                  }}
+                >
+                  Logout
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <>

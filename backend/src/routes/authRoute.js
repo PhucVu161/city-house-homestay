@@ -9,6 +9,7 @@ router.post("/register", registerUser);
 //LOG IN
 router.post("/login", loginUser);
 
+//CURRENT USER
 router.get("/me", authenticateToken, currentUser);
 
 export default router
