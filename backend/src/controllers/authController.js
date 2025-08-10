@@ -19,23 +19,18 @@ export const registerUser = async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(req.body.password, salt);
-
     // Create new user
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
       password: hashed,
     });
-
     // Save user to DB
     const user = await newUser.save();
-
     // Generate access token
     const accessToken = generateAccessToken(user);
-
     // Remove password before sending response
     const { password, ...userWithoutPassword } = user._doc;
-
     res.status(201).json({ user: userWithoutPassword, token: accessToken }); // Dùng 201 cho tạo mới
   } catch (err) {
     if (err.code === 11000) {
@@ -61,7 +56,6 @@ export const loginUser = async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid password" });
     }
-
     // Generate access token
     const accessToken = generateAccessToken(user);
     const { password, ...others } = user._doc;
@@ -69,11 +63,4 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Failed to login" });
   }
-};
-
-// CURRENT USER
-export const currentUser = async (req, res) => {
-  const currentUser = await User.findById(req.user.id).select("-password"); // bỏ password nếu có
-  if (!currentUser) return res.status(404).json({ message: "User not found" });
-  res.json(currentUser);
 };

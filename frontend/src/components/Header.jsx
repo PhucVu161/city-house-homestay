@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 
@@ -7,6 +7,11 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate("/");
+  }
   return (
     <div className="fixed w-full text-center bg-gray-400 flex justify-between items-center p-1">
       <div>icon</div>
@@ -43,11 +48,7 @@ export default function Header() {
                 </Link>
                 <div
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150 cursor-pointer"
-                  onClick={() => {
-                    // Xử lý logout ở đây
-                    dispatch(logout());
-                    console.log("Logout clicked");
-                  }}
+                  onClick={handleLogout}
                 >
                   Logout
                 </div>

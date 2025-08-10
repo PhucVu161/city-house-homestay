@@ -1,17 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { logout } from "../redux/slices/authSlice";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(state => state.auth);
 
-  const handleLogout = ()=>{
-    navigate("/");
-    dispatch(logout());
-  }
+const handleLogout = async () => {
+  await dispatch(logout());
+  navigate("/");
+};
   return (
     <div className="w-50 min-h-screen bg-black text-white">
       <div>
@@ -28,9 +26,6 @@ export default function Dashboard() {
       </div>
       <div>
         <button onClick={handleLogout}>Logout</button>
-      </div>
-      <div>
-        <button onClick={()=> {navigate("/")}}>Home</button>
       </div>
     </div>
   )

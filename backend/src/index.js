@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDB from './config/db.js'
 import authRoute from './routes/authRoute.js'
+import userRoute from './routes/userRoute.js'
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ connectDB();
 
 // Routes
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 // app.use('/api/rooms', require('./routes/rooms'));
 // app.use('/api/bookings', require('./routes/bookings'));
 

@@ -1,3 +1,5 @@
 export { default as UserLayout } from './UserLayout';
-export { default as Profile } from './Profile';
+export { default as ProfileLayout } from './ProfileLayout';
 export { default as Booking } from './Booking';
+export { default as EditProfile } from './EditProfile';
+export { default as EditPassword } from './EditPassword';

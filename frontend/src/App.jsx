@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router";
 import { Login, Register, MainLayout, Home, About } from "./pages";
-import { UserLayout, Profile, Booking } from "./pages/user";
+import { UserLayout, ProfileLayout, Booking, EditPassword, EditProfile } from "./pages/user";
 import {
   AdminLayout,
   AdminHomepage,
@@ -12,7 +12,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentUser } from "./redux/slices/authSlice";
 
-const ProtectedRoute = ({ isAuthenticated, user, allowedAdmin, children }) => {
+const ProtectedRoute = ({ isAuthenticated, user, loading, allowedAdmin, children }) => {
+
+  if (isAuthenticated && !user) {
+    return <div>Loading...</div>; // hoặc spinner
+  }
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
   }
@@ -20,7 +24,6 @@ const ProtectedRoute = ({ isAuthenticated, user, allowedAdmin, children }) => {
   if (user.isAdmin !== allowedAdmin) {
     return <Navigate to="/" replace />;
   }
-
   return children;
 };
 
@@ -47,6 +50,7 @@ function App() {
             <ProtectedRoute
               isAuthenticated={isAuthenticated}
               user={user}
+              loading={loading}
               allowedAdmin={false}
             >
               <UserLayout />
@@ -54,7 +58,10 @@ function App() {
           }
         >
           <Route path="/booking" element={<Booking />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfileLayout />} >
+            <Route index element={<EditProfile />} />
+            <Route path="change-password" element={<EditPassword />} />
+          </Route>
         </Route>
       </Route>
 
@@ -64,6 +71,7 @@ function App() {
           <ProtectedRoute
             isAuthenticated={isAuthenticated}
             user={user}
+            loading={loading}
             allowedAdmin={true}
           >
             <AdminLayout />

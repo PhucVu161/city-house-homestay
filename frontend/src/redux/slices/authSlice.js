@@ -25,7 +25,7 @@ export const fetchCurrentUser = createAsyncThunk(
     if (!token) return thunkAPI.rejectWithValue("No token");
 
     try {
-      const response = await axios.get("http://localhost:4000/auth/me", {
+      const response = await axios.get("http://localhost:4000/user/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
