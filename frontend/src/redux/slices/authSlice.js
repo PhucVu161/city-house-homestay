@@ -37,12 +37,63 @@ export const fetchCurrentUser = createAsyncThunk(
   }
 );
 
+// Thunk sửa thông tin user đang đăng nhập
+export const updateCurrentUser = createAsyncThunk(
+  "auth/updateCurrentUser",
+  async (updatedData, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("No token");
+
+    try {
+      const response = await axios.put(
+        "http://localhost:4000/user/me",
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data; // thông tin user mới
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+// Thunk thay đổi mật khẩu người dùng
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async ({ oldPassword, newPassword }, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("No token");
+
+    try {
+      const response = await axios.put(
+        "http://localhost:4000/user/me/password",
+        { oldPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.message; // ví dụ: "Password updated successfully"
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 // Thunk để đăng ký
 export const register = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:4000/auth/register", userData);
+      const response = await axios.post(
+        "http://localhost:4000/auth/register",
+        userData
+      );
       return response.data; // { user, token }
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -99,7 +150,32 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.token = null;
         state.isAuthenticated = false;
-        localStorage.removeItem('token'); // nếu token sai thì xóa luôn
+        localStorage.removeItem("token"); // nếu token sai thì xóa luôn
+      })
+      // Update Current User
+      .addCase(updateCurrentUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCurrentUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateCurrentUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Change Password
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       // Register
       .addCase(register.pending, (state) => {
