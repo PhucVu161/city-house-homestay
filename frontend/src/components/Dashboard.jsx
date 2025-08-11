@@ -16,13 +16,13 @@ const handleLogout = async () => {
         <Link to="/admin">Dashboard</Link>
       </div>
       <div>
-        <Link to="/admin/manage-booking">Manage booking</Link>
-      </div>
-      <div>
-        <Link to="/admin/manage-home">Manage home</Link>
-      </div>
-      <div>
         <Link to="/admin/manage-user">Manage user</Link>
+      </div>
+      <div>
+        <Link to="/admin/manage-room">Manage room</Link>
+      </div>
+      <div>
+        <Link to="/admin/manage-booking">Manage booking</Link>
       </div>
       <div>
         <button onClick={handleLogout}>Logout</button>

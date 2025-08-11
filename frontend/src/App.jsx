@@ -4,9 +4,12 @@ import { UserLayout, ProfileLayout, Booking, EditPassword, EditProfile } from ".
 import {
   AdminLayout,
   AdminHomepage,
-  ManageHome,
+  ManageRoomLayout,
   ManageBooking,
   ManageUser,
+  Room,
+  House,
+  RoomType,
 } from "./pages/admin";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,7 +83,11 @@ function App() {
       >
         <Route index element={<AdminHomepage />} />
         <Route path="manage-booking" element={<ManageBooking />} />
-        <Route path="manage-home" element={<ManageHome />} />
+        <Route path="manage-room" element={<ManageRoomLayout />} >
+            <Route index element={<Room />} />
+            <Route path="house" element={<House />} />
+            <Route path="type" element={<RoomType />} />
+        </Route>
         <Route path="manage-user" element={<ManageUser />} />
       </Route>
     </Routes>
