@@ -5,7 +5,6 @@ const roomTypeSchema = new mongoose.Schema(
     rank: {
       type: String,
       required: true,
-      unique: true,
     },
     area: {
       //tính theo m2
@@ -32,9 +31,14 @@ const roomTypeSchema = new mongoose.Schema(
       //giá theo giờ
       hour: { type: Number, required: true },
     },
+    deletedAt: {//dùng để soft delete
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
-
+// Tạo compound unique index
+roomTypeSchema.index({ rank: 1, deletedAt: 1 }, { unique: true });//đảm bảo {rank và deletedAt} là unique tránh code lặp với item bị soft delete
 const RoomType = mongoose.model("RoomType", roomTypeSchema);
 export default RoomType;

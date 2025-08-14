@@ -2,10 +2,9 @@ import mongoose from "mongoose";
 
 const houseSchema = new mongoose.Schema(
   {
-    code: {
+    code: {// ví dụ: H, A, B...
       type: String,
       required: true,
-      unique: true, // ví dụ: H, A, B...
     },
     district: {
       // ví dụ quận Ba Đình
@@ -26,9 +25,14 @@ const houseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    deletedAt: {//dùng để soft delete
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
-
+// Tạo compound unique index
+houseSchema.index({ code: 1, deletedAt: 1 }, { unique: true });//đảm bảo {code và deletedAt} là unique tránh code lặp với item bị soft delete
 const House = mongoose.model("House", houseSchema);
 export default House;

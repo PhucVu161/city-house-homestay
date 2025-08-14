@@ -6,7 +6,6 @@ const roomSchema = new mongoose.Schema(
     roomCode: {
       type: String,
       required: true,
-      unique: true,
     },
 
     // Tòa nhà mà phòng đó thuộc về
@@ -42,6 +41,9 @@ const roomSchema = new mongoose.Schema(
           "Bồn tắm",
           "Tủ check-in",
           "Giặt sấy",
+          "Ban công",
+          "Điều hòa",
+          "Máy lọc không khí",
         ],
         required: true,
       },
@@ -61,9 +63,14 @@ const roomSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    deletedAt: {//dùng để soft delete
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
-
+// Tạo compound unique index
+roomSchema.index({ roomCode: 1, deletedAt: 1 }, { unique: true });//đảm bảo {roomCode và deletedAt} là unique tránh code lặp với item bị soft delete
 const Room = mongoose.model("Room", roomSchema);
 export default Room;

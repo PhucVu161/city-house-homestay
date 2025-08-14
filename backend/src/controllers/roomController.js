@@ -14,7 +14,7 @@ export const createRoom = async (req, res) => {
 // Lấy danh sách tất cả phòng (có populate House và RoomType)
 export const getAllRooms = async (req, res) => {
   try {
-    const rooms = await Room.find()
+    const rooms = await Room.find({ deletedAt: null })
       .populate("house")
       .populate("roomType");
     res.status(200).json(rooms);
@@ -26,7 +26,7 @@ export const getAllRooms = async (req, res) => {
 // Lấy chi tiết phòng theo ID
 export const getRoomById = async (req, res) => {
   try {
-    const room = await Room.findById(req.params.id)
+    const room = await Room.findOne({ _id: req.params.id, deletedAt: null })
       .populate("house")
       .populate("roomType");
     if (!room) return res.status(404).json({ error: "Không tìm thấy phòng" });
@@ -53,7 +53,11 @@ export const updateRoom = async (req, res) => {
 // Xóa phòng
 export const deleteRoom = async (req, res) => {
   try {
-    const deleted = await Room.findByIdAndDelete(req.params.id);
+    const deleted = await Room.findByIdAndUpdate(
+      req.params.id,
+      { deletedAt: new Date() },
+      { new: true }
+    );
     if (!deleted) return res.status(404).json({ error: "Không tìm thấy phòng để xóa" });
     res.status(200).json({ message: "Đã xóa thành công" });
   } catch (err) {

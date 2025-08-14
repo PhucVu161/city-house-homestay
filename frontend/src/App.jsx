@@ -16,14 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentUser } from "./redux/slices/authSlice";
 
 const ProtectedRoute = ({ isAuthenticated, user, loading, allowedAdmin, children }) => {
-
   if (isAuthenticated && !user) {
     return <div>Loading...</div>; // hoặc spinner
   }
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
   }
-
   if (user.isAdmin !== allowedAdmin) {
     return <Navigate to="/" replace />;
   }
@@ -46,7 +44,7 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
-
+        
         <Route
           path="/"
           element={
