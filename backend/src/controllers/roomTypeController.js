@@ -24,8 +24,12 @@ export const getAllRoomTypes = async (req, res) => {
 // Lấy chi tiết loại phòng theo ID
 export const getRoomTypeById = async (req, res) => {
   try {
-    const roomType = await RoomType.findOne({ _id: req.params.id, deletedAt: null });
-    if (!roomType) return res.status(404).json({ error: "Không tìm thấy loại phòng" });
+    const roomType = await RoomType.findOne({
+      _id: req.params.id,
+      deletedAt: null,
+    });
+    if (!roomType)
+      return res.status(404).json({ error: "Không tìm thấy loại phòng" });
     res.status(200).json(roomType);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,9 +41,12 @@ export const updateRoomType = async (req, res) => {
   try {
     const updated = await RoomType.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
-    if (!updated) return res.status(404).json({ error: "Không tìm thấy loại phòng để cập nhật" });
+    if (!updated)
+      return res
+        .status(404)
+        .json({ error: "Không tìm thấy loại phòng để cập nhật" });
     res.status(200).json(updated);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -54,7 +61,10 @@ export const deleteRoomType = async (req, res) => {
       { deletedAt: new Date() },
       { new: true }
     );
-    if (!deleted) return res.status(404).json({ error: "Không tìm thấy loại phòng để xóa" });
+    if (!deleted)
+      return res
+        .status(404)
+        .json({ error: "Không tìm thấy loại phòng để xóa" });
     res.status(200).json({ message: "Đã xóa thành công" });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -5,7 +5,10 @@ export const createRoom = async (req, res) => {
   try {
     const newRoom = new Room(req.body);
     const savedRoom = await newRoom.save();
-    res.status(201).json(savedRoom);
+    const populatedRoom = await Room.findById(savedRoom._id)
+  .populate("house")
+  .populate("roomType");
+    res.status(201).json(populatedRoom);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -42,7 +45,9 @@ export const updateRoom = async (req, res) => {
     const updated = await Room.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
-    });
+    })
+  .populate("house")
+  .populate("roomType");
     if (!updated) return res.status(404).json({ error: "Không tìm thấy phòng để cập nhật" });
     res.status(200).json(updated);
   } catch (err) {

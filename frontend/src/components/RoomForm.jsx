@@ -4,6 +4,7 @@ import { addRoom, updateRoom } from "../redux/slices/roomSlice";
 import { fetchHouses } from "../redux/slices/houseSlice";
 import { fetchRoomTypes } from "../redux/slices/roomTypeSlice";
 import { AMENITIES } from "../constants/amenities";
+import axios from "axios";
 
 export default function RoomForm({ setIsDisplayForm, formData }) {
   //gọi api lấy danh sách house và roomType lưu vào redux để gắn vào option trong selector
@@ -23,22 +24,7 @@ export default function RoomForm({ setIsDisplayForm, formData }) {
   const [description, setDescription] = useState(room.description);
   const [wifi, setWifi] = useState(room.wifi);
   const [amenities, setAmenities] = useState(room.amenities);
-  const [images, setImages] = useState(room.images);
-  //xử lý thêm và sửa
-  const handleClick = () => {
-    const roomForm = {
-      roomCode,
-      house,
-      roomType,
-    };
-    if (formData.type === "Thêm") {
-      dispatch(addRoom(roomForm));
-    }
-    if (formData.type === "Sửa") {
-      dispatch(updateRoom({ id: formData.room._id, updatedData: roomForm }));
-    }
-    setIsDisplayForm(false);
-  };
+  const [images, setImages] = useState(room.images || []);
   //xử lý chọn hay không chọn tiện ích amenity
   const toggleAmenity = (label) => {
     setAmenities((prev) =>
@@ -48,23 +34,70 @@ export default function RoomForm({ setIsDisplayForm, formData }) {
     );
   };
   //Xử lý chọn ảnh
-  const handleImageSelect = (e) => {
-  const files = Array.from(e.target.files);
-  const newImages = files.map((file) => ({
-    file,
-    preview: URL.createObjectURL(file),
-  }));
-  setImages((prev) => [...prev, ...newImages]);
-};
-//xử lý xóa ảnh
-const removeImage = (index) => {
-  setImages((prev) => {
-    const updated = [...prev];
-    URL.revokeObjectURL(updated[index].preview); // cleanup
-    updated.splice(index, 1);
-    return updated;
-  });
-};
+  const selectImage = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setImages((prev) => [...prev, ...newImages]);
+  };
+  //xử lý xóa ảnh
+  const removeImage = (index) => {
+    setImages((prev) => {
+      const updated = [...prev];
+      URL.revokeObjectURL(updated[index].preview); // cleanup
+      updated.splice(index, 1);
+      return updated;
+    });
+  };
+  //xử lý upload ảnh lên server
+  const uploadImages = async (files) => {
+    if (!files || files.length === 0) return []; //kiểm trả ảnh có ảnh nào thêm mới không nếu không trả về rỗng
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("images", file));
+
+    try {
+      const res = await axios.post("http://localhost:4000/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return res.data.files.map((item) => item.filename);
+    } catch (error) {
+      console.error("Lỗi upload ảnh:", error);
+      throw error;
+    }
+  };
+  //xử lý thêm và sửa
+  const handleClick = async () => {
+    const oldImages = images.filter((img) => !img.file); //lọc các ảnh cũ không có file hay preview chỉ có tên ảnh đã lưu ở server
+    const newImageFiles = images
+      .filter((img) => img.file)
+      .map((img) => img.file); //lọc các ảnh mới thêm vào lấy file ảnh
+    const newImages = await uploadImages(newImageFiles); // upload ảnh
+    const roomForm = {
+      roomCode,
+      house,
+      roomType,
+      description,
+      wifi,
+      amenities,
+      images: [...oldImages, ...newImages],
+    };
+    if (formData.type === "Thêm") {
+      dispatch(addRoom(roomForm));
+    }
+    if (formData.type === "Sửa") {
+      console.log("Room update payload:", {
+  id: formData.room._id,
+  updatedData: roomForm,
+});
+      dispatch(updateRoom({ id: formData.room._id, updatedData: roomForm }));
+    }
+    setIsDisplayForm(false);
+  };
 
   return (
     <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 rounded-xl w-[1200px] h-[630px] z-10 bg-white">
@@ -87,7 +120,7 @@ const removeImage = (index) => {
         <div>
           <label htmlFor="houseSelector">Tòa nhà</label>
           <select
-            name=""
+            name="houseSelector"
             id="houseSelector"
             value={house}
             onChange={(e) => {
@@ -106,7 +139,7 @@ const removeImage = (index) => {
         <div>
           <label htmlFor="roomTypeSelector">Hạng phòng</label>
           <select
-            name=""
+            name="roomTypeSelector"
             id="roomTypeSelector"
             value={roomType}
             onChange={(e) => {
@@ -156,7 +189,7 @@ const removeImage = (index) => {
             type="text"
             value={wifi.pass || ""}
             onChange={(e) => {
-              setDescription((pre) => ({ ...pre, pass: e.target.value }));
+              setWifi((pre) => ({ ...pre, pass: e.target.value }));
             }}
           />
         </div>
@@ -174,6 +207,8 @@ const removeImage = (index) => {
             >
               <input
                 type="checkbox"
+                id={`amenity-${label}`}
+                name="amenities"
                 checked={amenities.includes(label)}
                 onChange={() => toggleAmenity(label)}
                 className=""
@@ -186,29 +221,32 @@ const removeImage = (index) => {
         {/* Chọn các ảnh về phòng để đăng lên */}
         <div>
           <div className="flex flex-wrap gap-4 mt-2">
-  {images.map((img, index) => (
-    <div key={index} className="relative w-24 h-24">
-      <img
-        src={img.preview || img} // nếu là URL từ server
-        alt={`preview-${index}`}
-        className="w-full h-full object-cover rounded"
-      />
-      <button
-        type="button"
-        onClick={() => removeImage(index)}
-        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-      >
-        ✕
-      </button>
-    </div>
-  ))}
-</div>
-<input
-  type="file"
-  multiple
-  accept="image/*"
-  onChange={handleImageSelect}
-/>
+            {images.map((img, index) => (
+              <div key={index} className="relative w-24 h-24">
+                <img
+                  src={img.preview || "http://localhost:4000/uploads/" + img} // nếu là URL từ server
+                  alt={`preview-${index}`}
+                  className="w-full h-full object-cover rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <label htmlFor="imageUpload">Chọn thêm ảnh</label>
+          <input
+            id="imageUpload"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={selectImage}
+            style={{ display: "none" }}
+          />
         </div>
       </div>
       <div className="flex justify-around">
