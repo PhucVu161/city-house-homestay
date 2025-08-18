@@ -1,0 +1,32 @@
+.rdp-root {
+  --rdp-accent-color: orange; /* Change the accent color to indigo. */
+  --rdp-accent-background-color: white; /* Change the accent background color. */
+  /* Add more CSS variables here. */
+  background-color: white;
+  border-radius: 14px;
+  padding: 10px;
+   --rdp-selected-border: none; /* xóa border của ngày đã chọn */
+}
+/* style cho ngày được hover */
+.rdp-day:hover {
+  color: orange;
+  cursor: pointer;
+}
+/* style cho ngày được chọn */
+.rdp-selected {
+  background-color: #ffe5b4; /* Cam nhạt */
+  border-radius: 100%; /* Tùy chỉnh bo góc nếu muốn */
+  color: orange;
+}
+/* style cho ngày hiện tại */
+.rdp-today {
+  background-color: red;
+}
+.rdp-disabled {
+  color: gray;
+  pointer-events: none;
+  background-color: transparent;
+}
+.rdp-outside {
+  color: gray;
+}

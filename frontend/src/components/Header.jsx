@@ -13,19 +13,22 @@ export default function Header() {
     navigate("/");
   }
   return (
-    <div className="fixed w-full text-center bg-gray-400 flex justify-between items-center p-1">
-      <div>icon</div>
+    <div className="fixed w-full text-center bg-[#FFB266] flex justify-between items-center p-1 z-50">
+      <img className="w-14 bg-white aspect-square border-2 border-[#934900] rounded-full" src="/image.png" alt="" />
       <div className="flex gap-4">
         <div>
-          <Link to="/">Home</Link>
+          <Link to="/">Trang chủ</Link>
         </div>
         <div>
-          <Link to="/about">About</Link>
+          <Link to="/search-room">Tìm phòng</Link>
+        </div>
+        <div>
+          <Link to="/about">Giới thiệu</Link>
         </div>
         {isAuthenticated && user && !user.isAdmin && (
           <>
             <div>
-              <Link to="/booking">Booking</Link>
+              <Link to="/booking">Đặt phòng</Link>
             </div>
           </>
         )}
@@ -45,6 +48,12 @@ export default function Header() {
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150"
                 >
                   Profile
+                </Link>
+                <Link
+                  to="/my-booking"
+                  className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150"
+                >
+                  My booking
                 </Link>
                 <div
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150 cursor-pointer"

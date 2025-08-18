@@ -2,7 +2,7 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-200 py-12">
+    <footer className="bg-orange-950 text-gray-200 py-12">
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex justify-around gap-10">
           {/* Giới thiệu nhanh & Mạng xã hội */}
@@ -48,12 +48,12 @@ export default function Footer() {
                 href="https://www.threads.com/@cityhouse.homestay"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="hover:text-white transition"
+                className="hover:text-white transition"
               >
                 <svg
                   className="w-8 h-8"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   color="white"
@@ -61,9 +61,9 @@ export default function Footer() {
                   <path
                     d="M9.9141 8.12803C12.4185 6.11437 16.0241 7.18759 16.45 10.5C16.9018 14.014 16 16.8 12.5 16.8C9.24997 16.8 9.34997 14 9.34997 14C9.34997 11 14.5 10.6 17.5 12.1C23 15.6 19 22 13 22C8.02941 22 3.99997 19.5 3.99997 12C3.99997 4.5 8.02941 2 13 2C16.5079 2 19.6715 3.80695 20.8348 7.42085"
                     stroke="white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   ></path>
                 </svg>
               </a>

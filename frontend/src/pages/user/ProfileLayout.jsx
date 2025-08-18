@@ -6,7 +6,10 @@ const OPTIONS = [
     path: "/profile",
     name: "Personal information",
   },
-  { path: "/profile/change-password", name: "Change password" },
+  { 
+    path: "/profile/change-password",
+    name: "Change password"
+  },
 ];
 
 export default function ProfileLayout() {

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router";
-import { Login, Register, MainLayout, Home, About } from "./pages";
-import { UserLayout, ProfileLayout, Booking, EditPassword, EditProfile } from "./pages/user";
+import { Login, Register, MainLayout, Home, SearchRoom, About } from "./pages";
+import { UserLayout, ProfileLayout, Booking, EditPassword, EditProfile, MyBooking } from "./pages/user";
 import {
   AdminLayout,
   AdminHomepage,
@@ -43,8 +43,9 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="search-room" element={<SearchRoom />} />
         <Route path="about" element={<About />} />
-        
+{/* Trang giành cho user được ProtectedRoute */}
         <Route
           path="/"
           element={
@@ -63,9 +64,10 @@ function App() {
             <Route index element={<EditProfile />} />
             <Route path="change-password" element={<EditPassword />} />
           </Route>
+          <Route path="/my-booking" element={<MyBooking />} />
         </Route>
       </Route>
-
+{/* Trang giành cho admin được ProtectedRoute */}
       <Route
         path="/admin"
         element={
