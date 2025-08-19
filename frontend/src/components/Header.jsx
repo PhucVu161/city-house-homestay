@@ -13,8 +13,11 @@ export default function Header() {
     navigate("/");
   }
   return (
-    <div className="fixed w-full text-center bg-[#FFB266] flex justify-between items-center p-1 z-50">
-      <img className="w-14 bg-white aspect-square border-2 border-[#934900] rounded-full" src="/image.png" alt="" />
+    <div className="fixed w-full text-center bg-amber-50 flex justify-between items-center p-1 z-50 border-b-2 border-b-lime-700">
+      <div className="flex items-center">
+        <img className="w-14 aspect-square rounded-full" src="/logo.jpg" alt="" />
+        <span className="text-yellow-500 font-extrabold">CITYHOUSE</span>        
+      </div>
       <div className="flex gap-4">
         <div>
           <Link to="/">Trang chủ</Link>

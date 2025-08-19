@@ -10,6 +10,7 @@ import houseRoute from './routes/houseRoute.js'
 import roomTypeRoute from './routes/roomTypeRoute.js'
 import roomRoute from './routes/roomRoute.js'
 import uploadRoute from './routes/uploadRoute.js'
+import bookingRoute from './routes/bookingRoute.js'
 
 dotenv.config();
 const app = express();
@@ -31,8 +32,8 @@ app.use("/user", userRoute);
 app.use("/house", houseRoute);
 app.use("/room-type", roomTypeRoute);
 app.use("/room", roomRoute);
-// app.use('/api/bookings', require('./routes/bookings'));
 app.use("/upload", uploadRoute);
+app.use('/booking', bookingRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

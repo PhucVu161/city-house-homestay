@@ -20,6 +20,11 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    bookingType: {//Dựa vào loại để tính lại totalPrice
+      type: String,
+      enum: ['byHour', 'halfDay', 'byDay'], // Chỉ cho phép các giá trị này
+      required: true,
+    },
     totalPrice: {
       type: Number,
       required: true,
@@ -44,5 +49,4 @@ bookingSchema.pre('save', function (next) {
   next();
 });
 
-const Booking = mongoose.model("Booking", bookingSchema);
-module.exports = Booking;
+export default mongoose.model("Booking", bookingSchema);
