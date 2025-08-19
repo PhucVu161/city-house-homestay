@@ -1,4 +1,5 @@
 import Room from "../models/Room.js";
+import Booking from "../models/Booking.js";
 
 // Tạo phòng mới
 export const createRoom = async (req, res) => {
@@ -6,11 +7,11 @@ export const createRoom = async (req, res) => {
     const newRoom = new Room(req.body);
     const savedRoom = await newRoom.save();
     const populatedRoom = await Room.findById(savedRoom._id)
-  .populate("house")
-  .populate("roomType");
+      .populate("house")
+      .populate("roomType");
     res.status(201).json(populatedRoom);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -22,7 +23,7 @@ export const getAllRooms = async (req, res) => {
       .populate("roomType");
     res.status(200).json(rooms);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -35,7 +36,7 @@ export const getRoomById = async (req, res) => {
     if (!room) return res.status(404).json({ error: "Không tìm thấy phòng" });
     res.status(200).json(room);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -44,14 +45,17 @@ export const updateRoom = async (req, res) => {
   try {
     const updated = await Room.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     })
-  .populate("house")
-  .populate("roomType");
-    if (!updated) return res.status(404).json({ error: "Không tìm thấy phòng để cập nhật" });
+      .populate("house")
+      .populate("roomType");
+    if (!updated)
+      return res
+        .status(404)
+        .json({ error: "Không tìm thấy phòng để cập nhật" });
     res.status(200).json(updated);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -63,9 +67,52 @@ export const deleteRoom = async (req, res) => {
       { deletedAt: new Date() },
       { new: true }
     );
-    if (!deleted) return res.status(404).json({ error: "Không tìm thấy phòng để xóa" });
+    if (!deleted)
+      return res.status(404).json({ error: "Không tìm thấy phòng để xóa" });
     res.status(200).json({ message: "Đã xóa thành công" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Tìm kiếm phòng theo checkIn và checkOut
+export const searchRooms = async (req, res) => {
+  try {
+    const { checkIn, checkOut } = req.query;
+
+    //kiểm tra có dữ liệu trong checkin checkout không
+    if (!checkIn || !checkOut) {
+      return res.status(400).json({ message: "Missing checkIn or checkOut" });
+    }
+
+    //chuyển từ chuỗi ISO 8601 về kiểu Date
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const now = new Date();
+
+    //kiểm tra checkIn và checkOut có hợp lệ không
+    if (start <= now) {
+      return res.status(400).json({ message: "checkIn must be in the future" });
+    }
+    if (start >= end) {
+      return res
+        .status(400)
+        .json({ message: "checkOut must be after checkIn" });
+    }
+
+    // Tìm các booking bị giao nhau với khoảng thời gian yêu cầu
+    const bookedRooms = await Booking.find({
+      $or: [{ checkIn: { $lt: end }, checkOut: { $gt: start } }],
+    }).distinct("roomId"); //để roomId là kết quả duy nhất
+
+    // Trả về các phòng không nằm trong danh sách đã bị đặt
+    const availableRooms = await Room.find({
+      _id: { $nin: bookedRooms }, // lấy các phòng mà _id không thuộc bookedRooms
+      deletedAt: null, // chỉ lấy phòng chưa bị xóa
+    });
+
+    res.status(200).json({ availableRooms });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

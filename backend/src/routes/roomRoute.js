@@ -3,16 +3,21 @@ import {
   getAllRooms,
   getRoomById,
   updateRoom,
-  deleteRoom
+  deleteRoom,
+  searchRooms
 } from "../controllers/roomController.js";
 import { authenticateToken, authorizeAdmin } from "../middleware/authMiddleware.js";
 import express from "express";
 const router = express.Router();
 
-router.post("/", authenticateToken, authorizeAdmin, createRoom);
-router.get("/", authenticateToken, authorizeAdmin, getAllRooms);
-router.get("/:id", authenticateToken, authorizeAdmin, getRoomById);
-router.put("/:id", authenticateToken, authorizeAdmin, updateRoom);
-router.delete("/:id", authenticateToken, authorizeAdmin, deleteRoom);
+//api dành cho người dùng
+router.get('/search', searchRooms);
+
+//api để admin quản lý phòng
+router.post("/", authenticateToken, authorizeAdmin, createRoom);//tạo phòng mới
+router.get("/", authenticateToken, authorizeAdmin, getAllRooms);//lấy danh sách phòng
+router.get("/:id", authenticateToken, authorizeAdmin, getRoomById);//lấy thông tin phòng theo id
+router.put("/:id", authenticateToken, authorizeAdmin, updateRoom);//sửa phòng theo id
+router.delete("/:id", authenticateToken, authorizeAdmin, deleteRoom);//xóa phòng theo id
 
 export default router;

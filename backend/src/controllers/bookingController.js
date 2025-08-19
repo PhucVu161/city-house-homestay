@@ -12,6 +12,9 @@ export const createBooking = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // Kiểm tra checkIn phải nhỏ hơn checkOut và checkIn phải lớn hơn ngày hiện tại
+    //...
+
     // (Tuỳ chọn) Kiểm tra phòng có tồn tại không
     // const room = await Room.findById(roomId);
     // if (!room) return res.status(404).json({ message: 'Room not found' });
@@ -107,6 +110,36 @@ export const getBookings = async (req, res) => {
       .populate("roomId") // Lấy thông tin phòng
       .populate("userId") // Lấy thông tin người đặt
       .sort({ createdAt: -1 });
+
+    res.status(200).json({ bookings });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// Admin lấy danh sách booking chưa hoàn thành
+export const getActiveBookings = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const bookings = await Booking.find({ checkOut: { $gte: now } })
+      .populate("roomId")
+      .populate("userId")
+      .sort({ checkIn: 1 });
+
+    res.status(200).json({ bookings });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// Admin lấy danh sách booking đã hoàn thành
+export const getCompletedBookings = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const bookings = await Booking.find({ checkOut: { $lt: now } })
+      .populate("roomId")
+      .populate("userId")
+      .sort({ checkOut: -1 });
 
     res.status(200).json({ bookings });
   } catch (error) {
