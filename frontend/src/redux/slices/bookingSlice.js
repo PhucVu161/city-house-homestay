@@ -1,42 +1,75 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Thunk để tạo booking mới
 export const createBooking = createAsyncThunk(
-  'booking/createBooking',
+  "booking/createBooking",
   async (bookingData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:4000/booking', bookingData);
+      const response = await axios.post(
+        "http://localhost:4000/booking",
+        bookingData
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message || 'Lỗi không xác định');
+      return rejectWithValue(
+        error.response.data.message || "Lỗi không xác định"
+      );
     }
   }
 );
 
 // Thunk để lấy danh sách booking
 export const fetchBookings = createAsyncThunk(
-  'booking/fetchBookings',
+  "booking/fetchBookings",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:4000/booking/me');
+      const response = await axios.get("http://localhost:4000/booking/me");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message || 'Lỗi không xác định');
+      return rejectWithValue(
+        error.response.data.message || "Lỗi không xác định"
+      );
     }
   }
 );
 
 const bookingSlice = createSlice({
-  name: 'booking',
+  name: "booking",
   initialState: {
     bookings: [],
+    currentBooking: {
+      roomId: "",
+      checkIn: null,
+      checkOut: null,
+      bookingType: "byHour",
+      totalPrice: 0,
+    },
     loading: false,
     error: null,
   },
   reducers: {
     clearBookings: (state) => {
       state.bookings = [];
+    },
+    updateCurrentBooking: (state, action) => {
+      state.currentBooking = {
+        ...state.currentBooking,
+        ...action.payload,
+      };
+    },
+    resetCurrentBooking: (state) => {
+      state.currentBooking = {
+        roomId: "",
+        checkIn: null,
+        checkOut: null,
+        bookingType: "byHour",
+        totalPrice: 0,
+      };
+    },
+    resetTimeCurrentBooking: (state) => {
+      state.currentBooking.checkIn = null;
+      state.currentBooking.checkOut = null;
     },
   },
   extraReducers: (builder) => {
@@ -71,5 +104,5 @@ const bookingSlice = createSlice({
   },
 });
 
-export const { clearBookings } = bookingSlice.actions;
+export const { clearBookings, updateCurrentBooking, resetCurrentBooking, resetTimeCurrentBooking } = bookingSlice.actions;
 export default bookingSlice.reducer;

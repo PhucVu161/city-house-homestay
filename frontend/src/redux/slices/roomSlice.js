@@ -93,7 +93,7 @@ const roomSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // fetch room
+// fetch room
       .addCase(fetchRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -106,7 +106,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Add room
+// Add room
       .addCase(addRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -119,7 +119,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Update room
+// Update room
       .addCase(updateRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -137,7 +137,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Delete room
+// Delete room
       .addCase(deleteRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
