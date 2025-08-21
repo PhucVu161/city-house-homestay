@@ -1,23 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+//thunk cho người sử dụng
 export const fetchRooms = createAsyncThunk(
   "room/fetchRooms",
   async (_, thunkAPI) => {
-    const token = localStorage.getItem("token");
-    if (!token) return thunkAPI.rejectWithValue("No token");
     try {
-      const response = await axios.get("http://localhost:4000/room", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get("http://localhost:4000/room");
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );
+
+//thunk cho admin quản lý
 export const addRoom = createAsyncThunk(
   "room/addRoom",
   async (newRoomData, thunkAPI) => {

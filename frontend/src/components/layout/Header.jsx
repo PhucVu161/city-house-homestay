@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/slices/authSlice";
+import { logout } from "../../redux/slices/authSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,10 +13,10 @@ export default function Header() {
     navigate("/");
   }
   return (
-    <div className="fixed w-full text-center bg-amber-50 flex justify-between items-center p-1 z-50 border-b-2 border-b-lime-700">
+    <div className="fixed w-full text-center bg-brand-light flex justify-between items-center p-1 z-50 border-b-2 border-b-lime-700">
       <div className="flex items-center">
         <img className="w-14 aspect-square rounded-full" src="/logo.jpg" alt="" />
-        <span className="text-yellow-500 font-extrabold">CITYHOUSE</span>        
+        <span className="text-brand-main font-extrabold">CITYHOUSE</span>
       </div>
       <div className="flex gap-4">
         <div>

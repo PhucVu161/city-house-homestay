@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import "../assets/calendar.css";
+import "../../assets/calendar.css";
 import { vi } from "react-day-picker/locale";
+import { FaCalendarDays, FaArrowRightLong } from "react-icons/fa6";
 
 export default function SearchByDay() {
   const [checkIn, setCheckIn] = useState(null);
@@ -17,26 +18,27 @@ export default function SearchByDay() {
     }
   }, [isRandom]);
   return (
-    <div className="flex justify-between items-center border-2 rounded-[40px] h-20 w-3/5 m-auto p-2 gap-2 relative">
+    <div className="flex justify-between items-center border-2 border-brand-accent rounded-full w-2/5 p-2 gap-2 relative">
       <div
-        className="h-full grow hover:bg-gray-100 flex rounded-r-sm rounded-l-4xl"
+        className="h-full grow hover:bg-gray-100 flex rounded-4xl justify-around items-center"
         onClick={() => setShowPicker(!showPicker)}
       >
-        <div className="grow">
+            <FaCalendarDays size={30} className="text-brand-accent "/>
+        <div className="w-36 text-center">
           <div>Nhận phòng</div>
           <div>{checkIn ? checkIn.format("HH:mm, DD-MM-YYYY") : "Bất kỳ"}</div>
         </div>
-        <div className="grow">
+            <FaArrowRightLong size={30} className="text-brand-accent "/>
+        <div className="w-36 text-center">
           <div>Trả phòng</div>
           <div>
             {checkOut ? checkOut.format("HH:mm, DD-MM-YYYY") : "Bất kỳ"}
           </div>
         </div>
       </div>
-      <button className="bg-amber-500 h-full w-30 rounded-4xl">Tìm kiếm</button>
       {/* Hiển thị DatePicker nếu showPicker = true */}
       {showPicker && (
-        <div className=" bg-white rounded-2xl p-3 absolute left-1/2 bottom-[-10px] -translate-x-1/2 translate-y-full shadow-2xl">
+        <div className=" bg-white rounded-2xl p-3 absolute left-1/2 bottom-[-10px] -translate-x-1/2 translate-y-full shadow-2xl z-10">
           <div className="flex">
             <div>
               <DayPicker

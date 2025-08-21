@@ -4,7 +4,7 @@ import {
   deleteRoomType,
   fetchRoomTypes,
 } from "../../redux/slices/roomTypeSlice";
-import RoomTypeForm from "../../components/RoomTypeForm";
+import { RoomTypeForm } from "../../components";
 const initRoomType = {
   prices: {
     weekday: {

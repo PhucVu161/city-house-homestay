@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addHouse, updateHouse } from "../redux/slices/houseSlice";
-import { HOUSE_LABELS } from "../constants/houseLabel.js";
+import { addHouse, updateHouse } from "../../redux/slices/houseSlice.js";
+import { HOUSE_LABELS } from "../../constants/houseLabel.js";
 
 export default function HouseForm({ setIsDisplayForm, formData }) {
   //houseLabel giống house trong formData nhưng chỉ có trường giống key trong HOUSE_LABELS đã định nghĩa

@@ -1,13 +1,12 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { Header, Footer } from "../components";
 import { Outlet } from "react-router";
 
 export default function MainLayout() {
   return (
     <div>
       <Header />
-      <div className="pt-16 h-[900px]">
-        <Outlet />        
+      <div className="pt-16">
+        <Outlet />
       </div>
       <Footer />
     </div>

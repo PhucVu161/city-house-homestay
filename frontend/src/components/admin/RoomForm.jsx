@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addRoom, updateRoom } from "../redux/slices/roomSlice";
-import { fetchHouses } from "../redux/slices/houseSlice";
-import { fetchRoomTypes } from "../redux/slices/roomTypeSlice";
-import { AMENITIES } from "../constants/amenities";
+import { addRoom, updateRoom } from "../../redux/slices/roomSlice";
+import { fetchHouses } from "../../redux/slices/houseSlice";
+import { fetchRoomTypes } from "../../redux/slices/roomTypeSlice";
+import { AMENITIES } from "../../constants/amenities";
 import axios from "axios";
 
 export default function RoomForm({ setIsDisplayForm, formData }) {

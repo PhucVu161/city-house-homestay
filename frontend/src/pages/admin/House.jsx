@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteHouse, fetchHouses } from "../../redux/slices/houseSlice";
-import HouseForm from "../../components/HouseForm";
+import { HouseForm } from "../../components";
 
 export default function House() {
   const houses = useSelector((state) => state.house.list);

@@ -2,13 +2,13 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-orange-950 text-gray-200 py-12">
+    <footer className="bg-brand-dark text-brand-light py-12">
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex justify-around gap-10">
           {/* Giới thiệu nhanh & Mạng xã hội */}
           <div className="w-60 space-y-4">
             <div>
-              <h3 className="text-2xl font-semibold text-white">CITYHOUSE</h3>
+              <h3 className="text-2xl font-semibold">CITYHOUSE</h3>
             </div>
             <p>Không gian trải nghiệm hẹn hò hàng đầu tại Hà Nội</p>
             <p>100+ Homestay tại Hà Nội</p>
@@ -56,11 +56,10 @@ export default function Footer() {
                   strokeWidth="1.5"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  color="white"
                 >
                   <path
                     d="M9.9141 8.12803C12.4185 6.11437 16.0241 7.18759 16.45 10.5C16.9018 14.014 16 16.8 12.5 16.8C9.24997 16.8 9.34997 14 9.34997 14C9.34997 11 14.5 10.6 17.5 12.1C23 15.6 19 22 13 22C8.02941 22 3.99997 19.5 3.99997 12C3.99997 4.5 8.02941 2 13 2C16.5079 2 19.6715 3.80695 20.8348 7.42085"
-                    stroke="white"
+                    stroke="currentColor"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -89,7 +88,7 @@ export default function Footer() {
 
           {/* Liên kết nhanh */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Liên Kết Nhanh</h3>
+            <h3 className="text-xl font-semibold">Liên Kết Nhanh</h3>
             <ul className="space-y-2">
               <li>
                 <a className="hover:text-white transition">Trang Chủ</a>
@@ -111,7 +110,7 @@ export default function Footer() {
 
           {/* Thông tin liên hệ */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Liên Hệ</h3>
+            <h3 className="text-xl font-semibold">Liên Hệ</h3>
             <p>Địa chỉ: 28B Điện Biên Phủ, Hà Nội, Việt Nam</p>
             <p>
               Email:{" "}
@@ -124,7 +123,7 @@ export default function Footer() {
 
           {/*Bản đồ */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Tìm Chúng Tôi</h3>
+            <h3 className="text-xl font-semibold">Tìm Chúng Tôi</h3>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d931.0128863239645!2d105.8406383695281!3d21.03062345056119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab97f1027c53%3A0xf6b9759c2459e91f!2zMjEgUC4gVHLhuqduIFBow7osIMSQaeG7h24gQmnDqm4sIEJhIMSQw6xuaCwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1754826179686!5m2!1svi!2s"
               width="100%"

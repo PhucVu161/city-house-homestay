@@ -1,4 +1,4 @@
-import Dashboard from "../../components/Dashboard";
+import { Dashboard } from "../../components";
 import { Outlet } from "react-router";
 
 export default function AdminLayout() {

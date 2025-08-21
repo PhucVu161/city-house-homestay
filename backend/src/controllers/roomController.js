@@ -1,20 +1,6 @@
 import Room from "../models/Room.js";
 import Booking from "../models/Booking.js";
 
-// Tạo phòng mới
-export const createRoom = async (req, res) => {
-  try {
-    const newRoom = new Room(req.body);
-    const savedRoom = await newRoom.save();
-    const populatedRoom = await Room.findById(savedRoom._id)
-      .populate("house")
-      .populate("roomType");
-    res.status(201).json(populatedRoom);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
 // Lấy danh sách tất cả phòng (có populate House và RoomType)
 export const getAllRooms = async (req, res) => {
   try {
@@ -37,6 +23,20 @@ export const getRoomById = async (req, res) => {
     res.status(200).json(room);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+// Tạo phòng mới
+export const createRoom = async (req, res) => {
+  try {
+    const newRoom = new Room(req.body);
+    const savedRoom = await newRoom.save();
+    const populatedRoom = await Room.findById(savedRoom._id)
+      .populate("house")
+      .populate("roomType");
+    res.status(201).json(populatedRoom);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -109,7 +109,9 @@ export const searchRooms = async (req, res) => {
     const availableRooms = await Room.find({
       _id: { $nin: bookedRooms }, // lấy các phòng mà _id không thuộc bookedRooms
       deletedAt: null, // chỉ lấy phòng chưa bị xóa
-    });
+    })
+      .populate("house")
+      .populate("roomType");
 
     res.status(200).json({ availableRooms });
   } catch (error) {

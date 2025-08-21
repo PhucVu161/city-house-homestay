@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addRoomType, updateRoomType } from "../redux/slices/roomTypeSlice";
-import { ROOMTYPE_LABELS } from "../constants/roomTypeLabel.js";
+import { addRoomType, updateRoomType } from "../../redux/slices/roomTypeSlice.js";
+import { ROOMTYPE_LABELS } from "../../constants/roomTypeLabel.js";
 
 export default function RoomTypeForm({ setIsDisplayForm, formData }) {
   //roomTypeLabel giống roomType trong formData nhưng chỉ có trường giống key trong ROOMTYPE_LABELS đã định nghĩa

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom, fetchRooms } from "../../redux/slices/roomSlice";
-import RoomForm from "../../components/RoomForm";
+import { RoomForm } from "../../components";
 const initRoom = {
   roomCode: "",
   house: "",

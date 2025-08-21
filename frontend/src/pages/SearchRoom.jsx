@@ -1,44 +1,37 @@
-import {  useState } from "react";
-import SearchByHour from "../components/SearchByHour";
-import SearchByNight from "../components/SearchByNight";
-import SearchByDay from "../components/SearchByDay";
-
-const TYPE_SEARCH = [
-  {
-    key: "byHour",
-    name: "Theo giờ",
-  },
-  {
-    key: "byNight",
-    name: "Qua đêm",
-  },
-  {
-    key: "byDay",
-    name: "Theo ngày",
-  },
-];
+import { useEffect } from "react";
+import { Search, RoomCard, Filter } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRooms } from "../redux/slices/roomSlice";
 
 export default function SearchRoom() {
-  const [typeSelected, setTypeSelected] = useState("byHour");
+  const rooms = useSelector((state) => state.room.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchRooms());
+  }, []);
   return (
-    <div className="flex justify-center">
-      <div className="w-400 h-30 bg-amber-50 rounded-xl">
-        <div className="flex justify-center gap-4">
-          {TYPE_SEARCH.map((type) => (
-            <div
-              className={`my-2 cursor-pointer hover:text-orange-500 ${
-                type.key === typeSelected ? "border-b-2 border-orange-400" : ""
-              }`}
-              key={type.key}
-              onClick={() => setTypeSelected(type.key)}
-            >
-              {type.name}
+    <div className="flex flex-col">
+      <Search />
+      <div className="flex mx-10 mt-4 gap-4">
+        <div className="w-70 bg-brand-light rounded-2xl">
+          <Filter />
+        </div>
+        <div className="grow bg-brand-light rounded-2xl">
+          {rooms.map((room) => (
+            <div key={room._id} className="flex m-6">
+              <RoomCard room={room} />
+              <div className="flex flex-col grow text-right justify-between">
+                <div className="">
+                  <div className="text-2xl">300.000đ</div>
+                  <div>Giá cho 1 giờ</div>
+                </div>
+                <button className="border-2 border-brand-accent rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-accent transition duration-200">
+                  Đặt phòng
+                </button>
+              </div>
             </div>
           ))}
         </div>
-        {typeSelected === "byHour" && <SearchByHour />}
-        {typeSelected === "byNight" && <SearchByNight />}
-        {typeSelected === "byDay" && <SearchByDay />}
       </div>
     </div>
   );
