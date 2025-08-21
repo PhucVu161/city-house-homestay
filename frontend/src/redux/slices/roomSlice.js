@@ -13,6 +13,24 @@ export const fetchRooms = createAsyncThunk(
     }
   }
 );
+export const searchRooms = createAsyncThunk(
+  "room/searchRooms",
+  async ({ checkIn, checkOut }, thunkAPI) => {
+    try {
+      const response = await axios.get("http://localhost:4000/room/search", {
+        params: {
+          checkIn,
+          checkOut,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Search failed"
+      );
+    }
+  }
+);
 
 //thunk cho admin quản lý
 export const addRoom = createAsyncThunk(
@@ -103,6 +121,19 @@ const roomSlice = createSlice({
         state.list = action.payload;
       })
       .addCase(fetchRooms.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+// search room
+      .addCase(searchRooms.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchRooms.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload; // Ghi đè danh sách phòng bằng kết quả tìm kiếm
+      })
+      .addCase(searchRooms.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

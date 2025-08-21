@@ -4,14 +4,21 @@ import { BOOKING_TYPES } from "../../constants/bookingTypeLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCurrentBooking } from "../../redux/slices/bookingSlice";
 import { FaCalendarDays, FaArrowRightLong } from "react-icons/fa6";
+import { fetchRooms, searchRooms } from "../../redux/slices/roomSlice";
 
 export default function Search() {
-  const [showPicker, setShowPicker] = useState(false);
-  const [isRandom, setIsRandom] = useState(true);
   const { bookingType, checkIn, checkOut } = useSelector(
     (state) => state.booking.currentBooking
   );
   const dispatch = useDispatch();
+  const [showPicker, setShowPicker] = useState(false);
+  const [isRandom, setIsRandom] = useState(true);
+  const handleSearch = () => {
+    if(!checkIn || !checkOut){
+      dispatch(fetchRooms());
+    }
+    dispatch(searchRooms({checkIn, checkOut}));
+  }
   return (
     <div className="flex justify-center">
       <div className="w-400 h-30 bg-amber-50 rounded-xl">
@@ -60,8 +67,7 @@ export default function Search() {
               </div>
             )}
           </div>
-
-          <button className="hover:bg-brand-main hover:text-brand-light w-30 rounded-full border-2 border-brand-accent">
+          <button className="hover:bg-brand-main hover:text-brand-light w-30 rounded-full border-2 border-brand-accent" onClick={handleSearch}>
             Tìm kiếm
           </button>
         </div>

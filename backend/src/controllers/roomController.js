@@ -113,7 +113,7 @@ export const searchRooms = async (req, res) => {
       .populate("house")
       .populate("roomType");
 
-    res.status(200).json({ availableRooms });
+    res.status(200).json(availableRooms);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
