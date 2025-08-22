@@ -38,13 +38,15 @@ const bookingSlice = createSlice({
   name: "booking",
   initialState: {
     bookings: [],
-    currentBooking: {
-      roomId: "",
-      checkIn: null,
-      checkOut: null,
-      bookingType: "byHour",
-      totalPrice: 0,
-    },
+    currentBooking: sessionStorage.getItem("currentBooking")
+      ? JSON.parse(sessionStorage.getItem("currentBooking"))
+      : {
+          roomId: "",
+          checkIn: null,
+          checkOut: null,
+          bookingType: "byHour",
+          totalPrice: 0,
+        },
     loading: false,
     error: null,
   },
@@ -57,6 +59,7 @@ const bookingSlice = createSlice({
         ...state.currentBooking,
         ...action.payload,
       };
+      sessionStorage.setItem("currentBooking", JSON.stringify(state.currentBooking));
     },
     resetCurrentBooking: (state) => {
       state.currentBooking = {
@@ -66,10 +69,12 @@ const bookingSlice = createSlice({
         bookingType: "byHour",
         totalPrice: 0,
       };
+      sessionStorage.removeItem("currentBooking");
     },
     resetTimeCurrentBooking: (state) => {
       state.currentBooking.checkIn = null;
       state.currentBooking.checkOut = null;
+      sessionStorage.setItem("currentBooking", JSON.stringify(state.currentBooking));
     },
   },
   extraReducers: (builder) => {
@@ -104,5 +109,10 @@ const bookingSlice = createSlice({
   },
 });
 
-export const { clearBookings, updateCurrentBooking, resetCurrentBooking, resetTimeCurrentBooking } = bookingSlice.actions;
+export const {
+  clearBookings,
+  updateCurrentBooking,
+  resetCurrentBooking,
+  resetTimeCurrentBooking,
+} = bookingSlice.actions;
 export default bookingSlice.reducer;

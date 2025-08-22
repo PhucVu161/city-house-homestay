@@ -10,6 +10,8 @@ export { default as SearchByDay } from './user/SearchByDay';
 export { default as SearchByHour } from './user/SearchByHour';
 export { default as SearchHalfDay } from './user/SearchHalfDay';
 export { default as Search } from './user/Search';
+export { default as ChangeOptionBooking } from './user/ChangeOptionBooking';
+export { default as InfoBooking } from './user/InfoBooking';
 export { default as Filter } from './user/Filter';
 
 export { default as RoomCard } from './shared/RoomCard';

@@ -25,7 +25,7 @@ export default function SearchHalfDay({ setShowPicker, isRandom, setIsRandom }) 
           disabled={(date) => date < new Date()} //thiết lập các ngày bị vô hiệu hóa là những ngày trước thời điểm hiện tại
           selected={checkIn}
           onSelect={(date) => {
-            dispatch(updateCurrentBooking({checkIn: dayjs(date).hour(22), checkOut: dayjs(date).add(1, "day").hour(10)}))
+            dispatch(updateCurrentBooking({checkIn: dayjs(date).hour(22).toISOString(), checkOut: dayjs(date).add(1, "day").hour(10).toISOString()}))
             setIsRandom(false);
             // setShowPicker(false) // Ẩn sau khi chọn nếu muốn
           }}

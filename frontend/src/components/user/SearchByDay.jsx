@@ -26,7 +26,7 @@ export default function SearchByDay({ setShowPicker, isRandom, setIsRandom }) {
             disabled={(date) => date < new Date()} //thiết lập các ngày bị vô hiệu hóa là những ngày trước thời điểm hiện tại
             selected={checkIn}
             onSelect={(date) => {
-              dispatch(updateCurrentBooking({checkIn: dayjs(date).hour(10), checkOut: dayjs(date).add(1, "day").hour(10)}));
+              dispatch(updateCurrentBooking({checkIn: dayjs(date).hour(10).toISOString(), checkOut: dayjs(date).add(1, "day").hour(10).toISOString()}));
               setIsRandom(false);
               // setShowPicker(false) // Ẩn sau khi chọn nếu muốn
             }}
@@ -37,10 +37,10 @@ export default function SearchByDay({ setShowPicker, isRandom, setIsRandom }) {
           <DayPicker
             mode="single"
             showOutsideDays={true} //hiển thị các ngày của tháng khác
-            disabled={(date) => date < (checkIn || new Date())} //thiết lập các ngày bị vô hiệu hóa là những ngày trước thời điểm hiện tại
+            disabled={(date) => date < (checkIn ? new Date(checkIn) : new Date())} //thiết lập các ngày bị vô hiệu hóa là những ngày trước thời điểm hiện tại
             selected={checkOut}
             onSelect={(date) => {
-              dispatch(updateCurrentBooking({checkOut: dayjs(date).hour(10)}));
+              dispatch(updateCurrentBooking({checkOut: dayjs(date).hour(10).toISOString()}));
               setIsRandom(false);
               // setShowPicker(false) // Ẩn sau khi chọn nếu muốn
             }}

@@ -6,7 +6,7 @@ export default function RoomCard({ room }) {
       <img
         src={`http://localhost:4000/uploads/${room.images[0]}`}
         alt=""
-        className="w-[400px] h-[220px] rounded-2xl"
+        className="w-[360px] h-[220px] rounded-2xl"
       />
       <div className="ml-6 space-y-[4px] w-[630px] text-md">
         <div className="text-3xl">{room.roomCode}</div>

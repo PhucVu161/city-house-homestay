@@ -18,10 +18,6 @@
   border-radius: 100%; /* Tùy chỉnh bo góc nếu muốn */
   color: orange;
 }
-/* style cho ngày hiện tại */
-.rdp-today {
-  background-color: red;
-}
 .rdp-disabled {
   color: gray;
   pointer-events: none;

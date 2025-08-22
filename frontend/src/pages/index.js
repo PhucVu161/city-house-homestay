@@ -4,3 +4,4 @@ export { default as MainLayout } from './MainLayout';
 export { default as Home } from './Home';
 export { default as About } from './About';
 export { default as SearchRoom } from './SearchRoom';
+export { default as RoomDetail } from './RoomDetail';

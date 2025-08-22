@@ -28,13 +28,6 @@ export default function Header() {
         <div>
           <Link to="/about">Giới thiệu</Link>
         </div>
-        {isAuthenticated && user && !user.isAdmin && (
-          <>
-            <div>
-              <Link to="/booking">Đặt phòng</Link>
-            </div>
-          </>
-        )}
       </div>
       <div className="flex gap-4">
         {isAuthenticated && user && !user.isAdmin ? (

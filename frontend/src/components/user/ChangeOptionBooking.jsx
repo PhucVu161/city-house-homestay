@@ -4,25 +4,22 @@ import { BOOKING_TYPES } from "../../constants/bookingTypeLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCurrentBooking } from "../../redux/slices/bookingSlice";
 import { FaCalendarDays, FaArrowRightLong } from "react-icons/fa6";
-import { fetchRooms, searchRooms } from "../../redux/slices/roomSlice";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import dayjs from "dayjs";
 
-export default function Search() {
+export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
   const { bookingType, checkIn, checkOut } = useSelector(
     (state) => state.booking.currentBooking
   );
   const dispatch = useDispatch();
   const [showPicker, setShowPicker] = useState(false);
   const [isRandom, setIsRandom] = useState((checkIn || checkOut) ? false : true);
-  const handleSearch = () => {
-    if (!checkIn || !checkOut) {
-      dispatch(fetchRooms());
-    }
-    dispatch(searchRooms({ checkIn, checkOut }));
-  };
   return (
-    <div className="flex justify-center">
-      <div className="w-400 h-30 bg-amber-50 rounded-xl">
+    <div className="flex flex-col justify-evenly items-center bg-amber-50 rounded-xl w-130 h-60 fixed top-1/6 right-1/2 translate-x-1/2">
+        <div className="absolute top-0 right-0 text-2xl mt-2 mr-2 cursor-pointer" onClick={()=>setIsOpenChangeOption(false)}>
+            <AiOutlineCloseCircle />
+        </div>
+        <h1 className="text-xl font-semibold self-baseline ml-4">Sửa thời gian đặt phòng</h1>
         {/* Lựa chọn loại booking */}
         <div className="flex justify-center gap-4">
           {BOOKING_TYPES.map((type) => (
@@ -41,7 +38,7 @@ export default function Search() {
         </div>
         {/* Lịch lựa chọn thời gian theo loại */}
         <div className="flex justify-center gap-4">
-          <div className="flex justify-between items-center border-2 border-brand-accent rounded-[40px] w-2/5 p-2 gap-2 relative">
+          <div className="flex justify-between items-center border-2 border-brand-accent rounded-[40px] p-2 gap-2 relative">
             <div
               className="h-full grow hover:bg-gray-100 flex rounded-4xl justify-around items-center"
               onClick={() => setShowPicker(!showPicker)}
@@ -92,14 +89,7 @@ export default function Search() {
               </div>
             )}
           </div>
-          <button
-            className={`font-semibold hover:bg-brand-accent hover:text-brand-light w-36 text-brand-accent rounded-full border-2 border-brand-accent transition duration-200`}
-            onClick={handleSearch}
-          >
-            Tìm kiếm
-          </button>
         </div>
-      </div>
     </div>
   );
 }

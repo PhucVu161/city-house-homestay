@@ -15,7 +15,7 @@ export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
   useEffect(() => {
     if (checkIn) {
       dispatch(
-        updateCurrentBooking({ checkOut: checkIn.add(usageHours, "hour") })
+        updateCurrentBooking({ checkOut: dayjs(checkIn).add(usageHours, "hour").toISOString() })
       );
     }
   }, [checkIn, usageHours]);
@@ -34,7 +34,7 @@ export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
           disabled={(date) => date < new Date()} //thiết lập các ngày bị vô hiệu hóa là những ngày trước thời điểm hiện tại
           selected={checkIn}
           onSelect={(date) => {
-            dispatch(updateCurrentBooking({ checkIn: dayjs(date) }));
+            dispatch(updateCurrentBooking({ checkIn: dayjs(date).toISOString() }));
             setIsRandom(false);
             // setShowPicker(false) // Ẩn sau khi chọn nếu muốn
           }}
@@ -48,11 +48,11 @@ export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
               disabled={isRandom}
               name="hourSelector"
               id="hourSelector"
-              value={checkIn ? checkIn.hour() : 0}
+              value={checkIn ? dayjs(checkIn).hour() : 0}
               onChange={(e) =>
                 dispatch(
                   updateCurrentBooking({
-                    checkIn: checkIn.hour(e.target.value),
+                    checkIn: dayjs(checkIn).hour(e.target.value).toISOString(),
                   })
                 )
               }
