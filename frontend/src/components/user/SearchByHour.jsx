@@ -7,6 +7,15 @@ import { vi } from "react-day-picker/locale";
 import { useDispatch, useSelector } from "react-redux";
 import { resetTimeCurrentBooking, updateCurrentBooking, } from "../../redux/slices/bookingSlice";
 
+const CHECKIN_HOURS = Array.from({ length: 24 }, (_, i) => ({
+  value: i,
+  name: `${String(i).padStart(2, '0')}:00`,
+}));
+const USAGE_HOURS = Array.from({ length: 24 }, (_, i) => ({
+  value: i,
+  name: `${i} giờ`,
+}));
+
 export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
   const { checkIn } = useSelector((state) => state.booking.currentBooking);
   const dispatch = useDispatch();
@@ -57,10 +66,7 @@ export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
                 )
               }
             >
-              <option value={0}>00:00</option>
-              <option value={1}>01:00</option>
-              <option value={2}>02:00</option>
-              <option value={3}>03:00</option>
+              {CHECKIN_HOURS.map((hour)=><option key={hour.value} value={hour.value}>{hour.name}</option>)}
             </select>
           </div>
           <div className="flex flex-col flex-auto">
@@ -73,9 +79,7 @@ export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
               value={usageHours}
               onChange={(e) => setUsageHours(e.target.value)}
             >
-              <option value={1}>1 giờ</option>
-              <option value={2}>2 giờ</option>
-              <option value={3}>3 giờ</option>
+              {USAGE_HOURS.map((hour)=><option key={hour.value} value={hour.value}>{hour.name}</option>)}
             </select>
           </div>
         </div>

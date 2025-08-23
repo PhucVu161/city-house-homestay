@@ -17,9 +17,33 @@ export default function Search() {
   const handleSearch = () => {
     if (!checkIn || !checkOut) {
       dispatch(fetchRooms());
+    }else{
+      dispatch(searchRooms({ checkIn, checkOut }));
     }
-    dispatch(searchRooms({ checkIn, checkOut }));
   };
+  const handleChangeType = (type) => {
+    let newCheckIn = checkIn;
+    let newCheckOut = checkOut;
+    if(checkIn){
+      switch(type.key){
+        case 'byHour':
+          newCheckIn = dayjs(checkIn).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "hour").toISOString()
+          break;
+        case 'halfDay':
+          newCheckIn = dayjs(checkIn).hour(22).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "day").hour(10).toISOString()
+          break;
+        case 'byDay':
+          newCheckIn = dayjs(checkIn).hour(10).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "day").hour(10).toISOString()
+          break;
+        default:
+          break;
+      }      
+    }
+    dispatch(updateCurrentBooking({ bookingType: type.key, checkIn: newCheckIn, checkOut: newCheckOut }))
+  }
   return (
     <div className="flex justify-center">
       <div className="w-400 h-30 bg-amber-50 rounded-xl">
@@ -31,9 +55,7 @@ export default function Search() {
                 type.key === bookingType ? "border-b-2 border-brand-main" : ""
               }`}
               key={type.key}
-              onClick={() =>
-                dispatch(updateCurrentBooking({ bookingType: type.key }))
-              }
+              onClick={()=>handleChangeType(type)}
             >
               {type.name}
             </div>

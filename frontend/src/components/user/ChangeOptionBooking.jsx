@@ -14,6 +14,29 @@ export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
   const dispatch = useDispatch();
   const [showPicker, setShowPicker] = useState(false);
   const [isRandom, setIsRandom] = useState((checkIn || checkOut) ? false : true);
+  const handleChangeType = (type) => {
+    let newCheckIn = checkIn;
+    let newCheckOut = checkOut;
+    if(checkIn){
+      switch(type.key){
+        case 'byHour':
+          newCheckIn = dayjs(checkIn).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "hour").toISOString()
+          break;
+        case 'halfDay':
+          newCheckIn = dayjs(checkIn).hour(22).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "day").hour(10).toISOString()
+          break;
+        case 'byDay':
+          newCheckIn = dayjs(checkIn).hour(10).toISOString()
+          newCheckOut = dayjs(checkIn).add(1, "day").hour(10).toISOString()
+          break;
+        default:
+          break;
+      }      
+    }
+    dispatch(updateCurrentBooking({ bookingType: type.key, checkIn: newCheckIn, checkOut: newCheckOut }))
+  }
   return (
     <div className="flex flex-col justify-evenly items-center bg-amber-50 rounded-xl w-130 h-60 fixed top-1/6 right-1/2 translate-x-1/2">
         <div className="absolute top-0 right-0 text-2xl mt-2 mr-2 cursor-pointer" onClick={()=>setIsOpenChangeOption(false)}>
@@ -28,9 +51,7 @@ export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
                 type.key === bookingType ? "border-b-2 border-brand-main" : ""
               }`}
               key={type.key}
-              onClick={() =>
-                dispatch(updateCurrentBooking({ bookingType: type.key }))
-              }
+              onClick={()=>handleChangeType(type)}
             >
               {type.name}
             </div>

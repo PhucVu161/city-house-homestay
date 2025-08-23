@@ -6,10 +6,15 @@ import { GiPositionMarker } from "react-icons/gi";
 import { MdStar } from "react-icons/md";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { InfoBooking } from "../components";
+import dayjs from "dayjs";
+import { updateCurrentBooking } from "../redux/slices/bookingSlice";
 
 export default function RoomDetail() {
-  //lấy thông tin phòng lưu trong redux
+  //lấy id phòng từ url và thông tin lưu trong redux
   const { id } = useParams();
+  const { bookingType, checkIn, checkOut } = useSelector(
+    (state) => state.booking.currentBooking
+  );
   const room = useSelector((state) => state.room.currentRoom);
   //state cho hiển thị ảnh
   const [mainImage, setMainImage] = useState(null);
@@ -21,6 +26,50 @@ export default function RoomDetail() {
   useEffect(() => {
     dispatch(fetchRoomById(id));
   }, [id]);
+  //tính tổng tiền và lưu cùng roomId vào redux
+  useEffect(() => {
+    if (!room) return;
+    let prices = room.roomType.prices;
+    let totalPrice = 0;
+    if (checkIn && checkOut) {
+      const start = dayjs(checkIn);
+      const end = dayjs(checkOut);
+      switch (bookingType) {
+        case "byHour":
+          totalPrice = end.diff(start, 'hour') * prices.hour;
+          break;
+        case "halfDay":
+          const dayOfWeek = start.day(); //kiểm tra ngày checkin có phải t6 t7 cn không
+          if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
+            totalPrice = prices.weekend.halfDay;
+          } else {
+            totalPrice = prices.weekday.halfDay;
+          }
+          break;
+        case "byDay":
+          let weekendCount = 0;
+          let weekdayCount = 0;
+
+          let current = start;
+          while (current.isBefore(end, "day")) {
+            const day = current.day(); // 0 = Chủ Nhật, 5 = Thứ Sáu, 6 = Thứ Bảy
+            if (day === 5 || day === 6 || day === 0) {
+              weekendCount++;
+            } else {
+              weekdayCount++;
+            }
+            current = current.add(1, "day");
+          }
+          totalPrice =
+            weekdayCount * prices.weekday.allDay +
+            weekendCount * prices.weekend.allDay;
+          break;
+        default:
+          break;
+      }
+    }
+    dispatch(updateCurrentBooking({ roomId: id, totalPrice }));
+  }, [room, bookingType, checkIn, checkOut]);
   //set các ảnh hiển thị
   useEffect(() => {
     if (room && room.images && room.images.length > 0) {
@@ -47,6 +96,7 @@ export default function RoomDetail() {
       setVisibleImages(room.images.slice(newStart, newStart + 3));
     }
   };
+  //
 
   return (
     <div className="flex flex-col bg-brand-light px-36 pt-16">
@@ -63,7 +113,7 @@ export default function RoomDetail() {
                 <MdStar key={index} className="text-amber-400" />
               ))}
             </div>
-            <span>(336 reviews)</span>
+            <span>(336 đánh giá)</span>
           </div>
         </div>
       </div>
@@ -106,7 +156,9 @@ export default function RoomDetail() {
           </div>
           {/* Tiện ích phòng */}
           <div className="text-brand-accent mt-8 border-2 border-brand-accent">
-            <h1 className="my-4 font-bold text-brand-dark text-3xl">Tiện ích</h1>
+            <h1 className="my-4 font-bold text-brand-dark text-3xl">
+              Tiện ích
+            </h1>
             <div></div>
           </div>
           {/* Mô tả phòng */}
@@ -121,11 +173,13 @@ export default function RoomDetail() {
           </div>
           {/* Đánh giá phòng */}
           <div className="text-brand-accent mt-8 border-t-2 border-brand-accent/30">
-            <h1 className="my-4 font-bold text-brand-dark text-3xl">Đánh giá</h1>
+            <h1 className="my-4 font-bold text-brand-dark text-3xl">
+              Đánh giá
+            </h1>
           </div>
         </div>
         {/* Form thông tin đặt phòng */}
-              <InfoBooking />
+        <InfoBooking />
       </div>
     </div>
   );
