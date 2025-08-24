@@ -17,10 +17,10 @@ const USAGE_HOURS = Array.from({ length: 24 }, (_, i) => ({
 }));
 
 export default function SearchByHour({ setShowPicker, isRandom, setIsRandom }) {
-  const { checkIn } = useSelector((state) => state.booking.currentBooking);
+  const { checkIn, checkOut } = useSelector((state) => state.booking.currentBooking);
   const dispatch = useDispatch();
 
-  const [usageHours, setUsageHours] = useState(1);
+  const [usageHours, setUsageHours] = useState(checkIn ? dayjs(checkOut).diff(dayjs(checkIn), 'hour') : 1);
   useEffect(() => {
     if (checkIn) {
       dispatch(

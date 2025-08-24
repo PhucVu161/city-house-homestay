@@ -3,6 +3,10 @@ import { Search, RoomCard, Filter } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRooms, searchRooms } from "../redux/slices/roomSlice";
 import { Link, useNavigate } from "react-router";
+import {
+  fetchRoomById,
+  updateCurrentBooking,
+} from "../redux/slices/bookingSlice";
 
 export default function SearchRoom() {
   const [priceType, setPriceType] = useState();
@@ -16,16 +20,28 @@ export default function SearchRoom() {
   useEffect(() => {
     if (!checkIn || !checkOut) {
       dispatch(fetchRooms());
-    } else{
+    } else {
       dispatch(searchRooms({ checkIn, checkOut }));
     }
   }, []);
   useEffect(() => {
     setPriceType(bookingType);
   }, [rooms]);
-  const handleBook = () => {
+  const handleBook = (roomId) => {
     if (isAuthenticated) {
-      navigate("/room-booking");
+      if (!checkIn || !checkOut) {
+        alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
+      } else {
+        (async () => {
+          try {
+            await dispatch(fetchRoomById(roomId)).unwrap(); //đợi có lưu thông tin phòng vào currentRoom
+            dispatch(updateCurrentBooking({ roomId })); //để cập nhật id xong tính tiền lấy thông tin phòng từ currentRoom
+            navigate("/room-booking");
+          } catch (err) {
+            console.error("Lỗi khi fetch phòng:", err);
+          }
+        })();
+      }
     } else {
       alert("Vui lòng đăng nhập để sử dụng tính năng này!");
     }
@@ -56,7 +72,9 @@ export default function SearchRoom() {
               <div className="flex flex-col grow text-right justify-between">
                 {priceType === "byHour" && (
                   <div className="">
-                    <div className="text-2xl">{room.roomType.prices.hour.toLocaleString("vi-VN")}đ</div>
+                    <div className="text-2xl">
+                      {room.roomType.prices.hour.toLocaleString("vi-VN")}đ
+                    </div>
                     <div>Giá cho 1 giờ</div>
                   </div>
                 )}
@@ -65,7 +83,10 @@ export default function SearchRoom() {
                     <div>
                       <span>Chỉ từ</span>
                       <span className="ml-2 text-2xl">
-                        {room.roomType.prices.weekday.halfDay.toLocaleString("vi-VN")}đ
+                        {room.roomType.prices.weekday.halfDay.toLocaleString(
+                          "vi-VN"
+                        )}
+                        đ
                       </span>
                     </div>
                     <div>Giá qua đêm</div>
@@ -76,7 +97,10 @@ export default function SearchRoom() {
                     <div>
                       <span>Chỉ từ</span>
                       <span className="ml-2 text-2xl">
-                        {room.roomType.prices.weekday.allDay.toLocaleString("vi-VN")}đ
+                        {room.roomType.prices.weekday.allDay.toLocaleString(
+                          "vi-VN"
+                        )}
+                        đ
                       </span>
                     </div>
                     <div>Giá cho 1 ngày</div>
@@ -84,7 +108,7 @@ export default function SearchRoom() {
                 )}
                 <button
                   className="border-2 border-brand-accent rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-accent transition duration-200"
-                  onClick={handleBook}
+                  onClick={() => handleBook(room._id)}
                 >
                   Đặt phòng
                 </button>

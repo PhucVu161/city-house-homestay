@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//thunk cho người sử dụng
+//thunk lấy danh sách các phòng
 export const fetchRooms = createAsyncThunk(
   "room/fetchRooms",
   async (_, thunkAPI) => {
@@ -13,6 +13,7 @@ export const fetchRooms = createAsyncThunk(
     }
   }
 );
+//thunk tìm kiếm các phòng
 export const searchRooms = createAsyncThunk(
   "room/searchRooms",
   async ({ checkIn, checkOut }, thunkAPI) => {
@@ -28,17 +29,6 @@ export const searchRooms = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Search failed"
       );
-    }
-  }
-);
-export const fetchRoomById = createAsyncThunk(
-  "room/fetchRoomById",
-  async (roomId, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`http://localhost:4000/room/${roomId}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Lỗi không xác định");
     }
   }
 );
@@ -117,7 +107,6 @@ const roomSlice = createSlice({
   name: "room",
   initialState: {
     list: [],
-    currentRoom: null,
     loading: false,
     error: null,
   },
@@ -146,19 +135,6 @@ const roomSlice = createSlice({
         state.list = action.payload; // Ghi đè danh sách phòng bằng kết quả tìm kiếm
       })
       .addCase(searchRooms.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-// fetch room by id
-      .addCase(fetchRoomById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchRoomById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentRoom = action.payload;
-      })
-      .addCase(fetchRoomById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

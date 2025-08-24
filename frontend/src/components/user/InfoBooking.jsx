@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { FaPenToSquare } from "react-icons/fa6";
 import { useNavigate } from "react-router";
 
-export default function InfoBooking() {
+export default function InfoBooking({ allowChange = "" }) {
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [isOpenChangeOption, setIsOpenChangeOption] = useState(false);
@@ -13,22 +13,22 @@ export default function InfoBooking() {
     (state) => state.booking.currentBooking
   );
   const handleBook = () => {
-    if(isAuthenticated){
-      if(!checkIn || !checkOut){
+    if (isAuthenticated) {
+      if (!checkIn || !checkOut) {
         alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
-      }else{
+      } else {
         navigate("/room-booking");
       }
-    }else{
+    } else {
       alert("Vui lòng đăng nhập để sử dụng tính năng này!");
     }
-  }
+  };
   return (
     <div className="bg-white p-6 rounded-md w-[560px] shadow-xl space-y-3 self-baseline">
       <div className="flex justify-between font-semibold text-xl pb-3 border-b-2 border-gray-300">
         <div>Đặt phòng</div>
         <div
-          className="flex items-center text-sm text-gray-500 cursor-pointer"
+          className={`${allowChange} flex items-center text-sm text-gray-500 cursor-pointer`}
           onClick={() => setIsOpenChangeOption(true)}
         >
           <FaPenToSquare />
@@ -61,13 +61,13 @@ export default function InfoBooking() {
           {totalPrice.toLocaleString("vi-VN")}đ
         </div>
       </div>
-      <div className="space-y-2">
-          <button
-            className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200"
-            onClick={handleBook}
-          >
-            Xác nhận đặt
-          </button>
+      <div className={`${allowChange} space-y-2`}>
+        <button
+          className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200"
+          onClick={handleBook}
+        >
+          Xác nhận đặt
+        </button>
         <button className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
           Lưu yêu thích
         </button>
