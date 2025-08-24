@@ -7,6 +7,23 @@ import {
   fetchRoomById,
   updateCurrentBooking,
 } from "../redux/slices/bookingSlice";
+import axios from "axios";
+
+const checkRoomAvailable = async (roomId, checkIn, checkOut) => {
+  try {
+    const response = await axios.get("http://localhost:4000/room/check", {
+      params: {
+        roomId,
+        checkIn,
+        checkOut,
+      },
+    });
+    return response.data.available; // giả sử API trả về { available: true/false }
+  } catch (error) {
+    console.error("Lỗi kiểm tra phòng:", error);
+    return false;
+  }
+};
 
 export default function SearchRoom() {
   const [priceType, setPriceType] = useState();
@@ -27,24 +44,29 @@ export default function SearchRoom() {
   useEffect(() => {
     setPriceType(bookingType);
   }, [rooms]);
-  const handleBook = (roomId) => {
-    if (isAuthenticated) {
-      if (!checkIn || !checkOut) {
-        alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
-      } else {
-        (async () => {
-          try {
-            await dispatch(fetchRoomById(roomId)).unwrap(); //đợi có lưu thông tin phòng vào currentRoom
-            dispatch(updateCurrentBooking({ roomId })); //để cập nhật id xong tính tiền lấy thông tin phòng từ currentRoom
-            navigate("/room-booking");
-          } catch (err) {
-            console.error("Lỗi khi fetch phòng:", err);
-          }
-        })();
-      }
-    } else {
+  const handleBook = async (roomId) => {
+    if (!isAuthenticated) {
       alert("Vui lòng đăng nhập để sử dụng tính năng này!");
+      return;
     }
+    if (!checkIn || !checkOut) {
+      alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
+      return;
+    }
+    const isAvailable = await checkRoomAvailable(roomId, checkIn, checkOut);
+    if (!isAvailable) {
+      alert("Phòng đã được đặt trong khoảng thời gian này!\nVui lòng nhấn tìm kiếm để tìm các phòng còn trống");
+      return;
+    }
+    (async () => {
+      try {
+        await dispatch(fetchRoomById(roomId)).unwrap(); //đợi có lưu thông tin phòng vào currentRoom
+        dispatch(updateCurrentBooking({ roomId })); // //để cập nhật id xong tính tiền lấy thông tin phòng từ currentRoom
+        navigate("/room-booking"); // chuyển trang
+      } catch (err) {
+        console.error("Lỗi khi fetch phòng:", err);
+      }
+    })();
   };
   return (
     <div className="flex flex-col">

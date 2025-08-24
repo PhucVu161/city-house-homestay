@@ -4,24 +4,46 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { FaPenToSquare } from "react-icons/fa6";
 import { useNavigate } from "react-router";
+import axios from "axios";
+
+const checkRoomAvailable = async (roomId, checkIn, checkOut) => {
+  try {
+    const response = await axios.get("http://localhost:4000/room/check", {
+      params: {
+        roomId,
+        checkIn,
+        checkOut,
+      },
+    });
+    return response.data.available; // giả sử API trả về { available: true/false }
+  } catch (error) {
+    console.error("Lỗi kiểm tra phòng:", error);
+    return false;
+  }
+};
 
 export default function InfoBooking({ allowChange = "" }) {
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [isOpenChangeOption, setIsOpenChangeOption] = useState(false);
-  const { bookingType, checkIn, checkOut, totalPrice } = useSelector(
+  const { roomId, bookingType, checkIn, checkOut, totalPrice } = useSelector(
     (state) => state.booking.currentBooking
   );
-  const handleBook = () => {
-    if (isAuthenticated) {
-      if (!checkIn || !checkOut) {
-        alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
-      } else {
-        navigate("/room-booking");
-      }
-    } else {
+  const handleBook = async () => {
+    if (!isAuthenticated) {
       alert("Vui lòng đăng nhập để sử dụng tính năng này!");
+      return;
     }
+    if (!checkIn || !checkOut) {
+      alert("Vui lòng chọn thời gian nhận phòng và trả phòng!");
+      return;
+    }
+    const isAvailable = await checkRoomAvailable(roomId, checkIn, checkOut);
+    if (!isAvailable) {
+      alert("Phòng đã được đặt trong khoảng thời gian này!\nVui lòng chọn khoảng thời gian khác");
+      return;
+    }
+    navigate("/room-booking"); // chuyển trang
   };
   return (
     <div className="bg-white p-6 rounded-md w-[560px] shadow-xl space-y-3 self-baseline">

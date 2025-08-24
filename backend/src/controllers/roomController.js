@@ -118,3 +118,27 @@ export const searchRooms = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Kiểm tra phòng có khả dụng với checkIn, checkOut người dùng chọn không
+export const checkRoomAvailability = async (req, res) => {
+  try {
+    const { roomId, checkIn, checkOut } = req.query;
+    if (!roomId || !checkIn || !checkOut) {
+      return res.status(400).json({ message: "Missing parameters" });
+    }
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    //tìm các booking của roomId giao với checkIn checkOut
+    const overlappingBooking = await Booking.findOne({
+      roomId,
+      status: { $ne: "cancelled" },
+      checkIn: { $lt: end },
+      checkOut: { $gt: start },
+    });
+    const isAvailable = !overlappingBooking;
+
+    res.status(200).json({ available: isAvailable });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

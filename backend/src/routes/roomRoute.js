@@ -4,14 +4,16 @@ import {
   getRoomById,
   updateRoom,
   deleteRoom,
-  searchRooms
+  searchRooms,
+  checkRoomAvailability
 } from "../controllers/roomController.js";
 import { authenticateToken, authorizeAdmin } from "../middleware/authMiddleware.js";
 import express from "express";
 const router = express.Router();
 
 //api dành cho người dùng
-router.get('/search', searchRooms);
+router.get('/search', searchRooms);//Tìm các phòng trống
+router.get("/check", checkRoomAvailability);//kiểm tra phòng trống hay không
 router.get("/", getAllRooms);//lấy danh sách phòng
 router.get("/:id", getRoomById);//lấy thông tin phòng theo id
 
