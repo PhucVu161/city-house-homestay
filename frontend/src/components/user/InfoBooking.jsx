@@ -2,9 +2,11 @@ import { useState } from "react";
 import { ChangeOptionBooking } from "../../components";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { FaPenToSquare } from "react-icons/fa6";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { FaPenToSquare } from "react-icons/fa6";
+import { PiHeartBold } from "react-icons/pi";
+import { RiShareForwardLine } from "react-icons/ri";
 
 const checkRoomAvailable = async (roomId, checkIn, checkOut) => {
   try {
@@ -90,11 +92,13 @@ export default function InfoBooking({ allowChange = "" }) {
         >
           Xác nhận đặt
         </button>
-        <button className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
-          Lưu yêu thích
+        <button className="flex justify-center items-center p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
+          <PiHeartBold className="text-2xl mr-2"/>
+          <span>Lưu yêu thích</span>
         </button>
-        <button className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
-          Chia sẻ
+        <button className="flex justify-center items-center p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
+          <RiShareForwardLine className="text-2xl mr-2" />
+          <span>Chia sẻ phòng</span>
         </button>
       </div>
       {isOpenChangeOption && (

@@ -3,37 +3,41 @@ import { Link, Outlet } from "react-router";
 
 const OPTIONS = [
   {
+    key: "myInfo",
     path: "/profile",
-    name: "Personal information",
+    name: "Thông tin người dùng",
   },
   { 
+    key: "changePassword",
     path: "/profile/change-password",
-    name: "Change password"
+    name: "Thay đổi mật khẩu"
   },
 ];
 
 export default function ProfileLayout() {
-  const [isSelected, setIsSelected] = useState("Personal information");
+  const [isSelected, setIsSelected] = useState("myInfo");
   return (
-    <div>
-      <div className="ml-4 font-bold">My Profile</div>
+    <div className="flex flex-col px-36 py-16">
+      <div className="text-2xl font-bold">Hồ sơ của tôi</div>
       <div className="flex items-center gap-5 border-b-2 border-gray-200">
         {OPTIONS.map((item) => (
           <Link
             to={item.path}
-            key={item.path}
+            key={item.key}
             className={`p-3 ${
-              isSelected === item.name ? "border-b-4 border-amber-500" : ""
+              isSelected === item.key ? "border-b-4 border-brand-main text-brand-main" : ""
             }`}
             onClick={() => {
-              setIsSelected(item.name);
+              setIsSelected(item.key);
             }}
           >
             {item.name}
           </Link>
         ))}
       </div>
-      <Outlet />
+      <div className="self-center">
+      <Outlet />        
+      </div>
     </div>
   );
 }

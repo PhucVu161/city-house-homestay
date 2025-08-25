@@ -15,3 +15,4 @@ export { default as InfoBooking } from './user/InfoBooking';
 export { default as Filter } from './user/Filter';
 
 export { default as RoomCard } from './shared/RoomCard';
+export { default as BookingCard } from './shared/BookingCard';

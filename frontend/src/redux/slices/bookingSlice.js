@@ -1,6 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axios from "axios";
 import dayjs from "dayjs";
+
+// Tạo selector để lọc các booking của người dùng theo status
+export const selectBookingsByStatus = createSelector(
+  [(state) => state.booking.list, (_, status) => status],
+  (bookings, status) => {
+    switch(status){
+      case "all":
+        return bookings;
+      case "confirmed":
+        return bookings.filter((booking) => booking.status === "confirmed").filter((booking) => (new Date(booking.checkOut) > new Date()));
+      case "completed":
+        return bookings.filter((booking) => booking.status === "confirmed").filter((booking) => (new Date(booking.checkOut) < new Date()));
+      default:
+        return bookings.filter((booking) => booking.status === status);
+    }
+  }
+);
 
 // Thunk lấy thông tin phòng đang book
 export const fetchRoomById = createAsyncThunk(
@@ -58,6 +75,31 @@ export const fetchMyBookings = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error.response.data.message || "Lỗi không xác định"
+      );
+    }
+  }
+);
+
+// Thunk cho người dùng hủy đơn đang pending
+export const userCancelBooking = createAsyncThunk(
+  "booking/userCancelBooking",
+  async (bookingId, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("Không tìm thấy token");
+    try {
+      const response = await axios.patch(
+        `http://localhost:4000/booking/me/${bookingId}`,
+        {}, // Không cần body, vì server chỉ cần ID và user từ token
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return bookingId; // Trả về ID để reducer xóa khỏi danh sách
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Lỗi không xác định"
       );
     }
   }
@@ -201,6 +243,25 @@ const bookingSlice = createSlice({
       .addCase(fetchMyBookings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // Người dùng hủy đơn pending
+      .addCase(userCancelBooking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userCancelBooking.fulfilled, (state, action) => {
+        state.loading = false;
+        const bookingId = action.payload;
+        const index = state.list.findIndex(
+          (booking) => booking._id === bookingId
+        );
+        if (index !== -1) {
+          state.list[index].status = "cancelled";
+        }
+      })
+      .addCase(userCancelBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Hủy booking thất bại";
       });
   },
 });
