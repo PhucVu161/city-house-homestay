@@ -46,7 +46,7 @@ export default function InfoBooking({ allowChange = "" }) {
     navigate("/room-booking"); // chuyển trang
   };
   return (
-    <div className="bg-white p-6 rounded-md w-[560px] shadow-xl space-y-3 self-baseline">
+    <div className="bg-white p-6 rounded-md w-[520px] shadow-xl space-y-3 self-baseline">
       <div className="flex justify-between font-semibold text-xl pb-3 border-b-2 border-gray-300">
         <div>Đặt phòng</div>
         <div

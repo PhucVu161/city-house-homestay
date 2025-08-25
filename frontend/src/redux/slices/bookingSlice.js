@@ -10,7 +10,9 @@ export const fetchRoomById = createAsyncThunk(
       const response = await axios.get(`http://localhost:4000/room/${roomId}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Lỗi không xác định");
+      return rejectWithValue(
+        error.response?.data?.message || "Lỗi không xác định"
+      );
     }
   }
 );
@@ -19,12 +21,19 @@ export const fetchRoomById = createAsyncThunk(
 export const createBooking = createAsyncThunk(
   "booking/createBooking",
   async (bookingData, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("No token");
     try {
       const response = await axios.post(
         "http://localhost:4000/booking",
-        bookingData
+        bookingData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      return response.data;
+      return response.data.booking;
     } catch (error) {
       return rejectWithValue(
         error.response.data.message || "Lỗi không xác định"
@@ -33,13 +42,19 @@ export const createBooking = createAsyncThunk(
   }
 );
 
-// Thunk để lấy danh sách booking
-export const fetchBookings = createAsyncThunk(
-  "booking/fetchBookings",
+// Thunk để lấy danh sách booking của người dùng
+export const fetchMyBookings = createAsyncThunk(
+  "booking/fetchMyBookings",
   async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("No token");
     try {
-      const response = await axios.get("http://localhost:4000/booking/me");
-      return response.data;
+      const response = await axios.get("http://localhost:4000/booking/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.bookings;
     } catch (error) {
       return rejectWithValue(
         error.response.data.message || "Lỗi không xác định"
@@ -51,7 +66,7 @@ export const fetchBookings = createAsyncThunk(
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
-    bookings: [],
+    list: [],
     currentBooking: sessionStorage.getItem("currentBooking")
       ? JSON.parse(sessionStorage.getItem("currentBooking"))
       : {
@@ -67,7 +82,7 @@ const bookingSlice = createSlice({
   },
   reducers: {
     clearBookings: (state) => {
-      state.bookings = [];
+      state.list = [];
     },
     updateCurrentBooking: (state, action) => {
       state.currentBooking = {
@@ -90,7 +105,7 @@ const bookingSlice = createSlice({
         const end = dayjs(checkOut);
         switch (bookingType) {
           case "byHour":
-            totalPrice = end.diff(start, 'hour') * prices.hour;
+            totalPrice = end.diff(start, "hour") * prices.hour;
             break;
           case "halfDay":
             const dayOfWeek = start.day(); //kiểm tra ngày checkin có phải t6 t7 cn không
@@ -121,7 +136,7 @@ const bookingSlice = createSlice({
           default:
             break;
         }
-      }else{
+      } else {
         console.log("lỗi");
       }
       state.currentBooking.totalPrice = totalPrice;
@@ -147,19 +162,19 @@ const bookingSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    // fetch room by id
-          .addCase(fetchRoomById.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-          })
-          .addCase(fetchRoomById.fulfilled, (state, action) => {
-            state.loading = false;
-            state.currentRoom = action.payload;
-          })
-          .addCase(fetchRoomById.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-          })
+      // fetch room by id
+      .addCase(fetchRoomById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRoomById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentRoom = action.payload;
+      })
+      .addCase(fetchRoomById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       // Tạo booking
       .addCase(createBooking.pending, (state) => {
         state.loading = true;
@@ -167,7 +182,7 @@ const bookingSlice = createSlice({
       })
       .addCase(createBooking.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings.push(action.payload);
+        state.list.unshift(action.payload);
       })
       .addCase(createBooking.rejected, (state, action) => {
         state.loading = false;
@@ -175,15 +190,15 @@ const bookingSlice = createSlice({
       })
 
       // Lấy danh sách booking
-      .addCase(fetchBookings.pending, (state) => {
+      .addCase(fetchMyBookings.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchBookings.fulfilled, (state, action) => {
+      .addCase(fetchMyBookings.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings = action.payload;
+        state.list = action.payload;
       })
-      .addCase(fetchBookings.rejected, (state, action) => {
+      .addCase(fetchMyBookings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

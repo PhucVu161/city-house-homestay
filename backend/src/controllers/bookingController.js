@@ -52,7 +52,16 @@ export const createBooking = async (req, res) => {
     });
 
     await booking.save();
-    res.status(201).json({ message: "Booking created successfully", booking });
+    //Lấy đầu đủ thông tin room của booking đã tạo
+    const populatedBooking = await Booking.findById(booking._id).populate({
+      path: "roomId",
+      populate: [{ path: "house" }, { path: "roomType" }],
+    });
+
+    res.status(201).json({
+      message: "Booking created successfully",
+      booking: populatedBooking,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -64,7 +73,14 @@ export const getMyBookings = async (req, res) => {
     const userId = req.user.id;
 
     const bookings = await Booking.find({ userId })
-      .populate("roomId") // Lấy thông tin phòng
+      .populate({
+        // Lấy thông tin phòng
+        path: "roomId",
+        populate: [
+          { path: "house" }, // Lấy thông tin nhà
+          { path: "roomType" }, // Lấy loại phòng
+        ],
+      })
       .sort({ createdAt: -1 });
 
     res.status(200).json({ bookings });
@@ -159,9 +175,7 @@ export const cancelBooking = async (req, res) => {
     }
 
     if (booking.status === "cancelled") {
-      return res
-        .status(400)
-        .json({ message: "The booking is cancelled" });
+      return res.status(400).json({ message: "The booking is cancelled" });
     }
 
     booking.status = "cancelled";

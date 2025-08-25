@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router";
 import { Login, Register, MainLayout, Home, SearchRoom, About, RoomDetail } from "./pages";
-import { UserLayout, ProfileLayout, EditPassword, EditProfile, MyBooking, RoomBooking } from "./pages/user";
+import { UserLayout, ProfileLayout, EditPassword, EditProfile, MyBooking, RoomBooking, RoomBookingSuccess } from "./pages/user";
 import {
   AdminLayout,
   AdminHomepage,
@@ -61,6 +61,7 @@ function App() {
           }
         >
           <Route path="/room-booking" element={<RoomBooking />} />
+          <Route path="/room-booking-success" element={<RoomBookingSuccess />} />
           <Route path="/profile" element={<ProfileLayout />} >
             <Route index element={<EditProfile />} />
             <Route path="change-password" element={<EditPassword />} />

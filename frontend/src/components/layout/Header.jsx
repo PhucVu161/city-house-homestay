@@ -43,19 +43,19 @@ export default function Header() {
                   to="/profile"
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150"
                 >
-                  Profile
+                  Hồ sơ
                 </Link>
                 <Link
                   to="/my-booking"
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150"
                 >
-                  My booking
+                  Đơn đặt phòng
                 </Link>
                 <div
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition-colors duration-150 cursor-pointer"
                   onClick={handleLogout}
                 >
-                  Logout
+                  Đăng xuất
                 </div>
               </div>
             )}

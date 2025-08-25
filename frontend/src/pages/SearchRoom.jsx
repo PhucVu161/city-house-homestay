@@ -86,57 +86,59 @@ export default function SearchRoom() {
               <span className="p-2 rounded-md bg-gray-100">Phù hợp nhất</span>
             </div>
           </div>
-          {rooms.map((room) => (
-            <div key={room._id} className="flex m-3 bg-white p-3 rounded-2xl">
-              <Link to={`/room-detail/${room._id}`}>
-                <RoomCard room={room} />
-              </Link>
-              <div className="flex flex-col grow text-right justify-between">
-                {priceType === "byHour" && (
-                  <div className="">
-                    <div className="text-2xl">
-                      {room.roomType.prices.hour.toLocaleString("vi-VN")}đ
+          <div className="flex flex-col gap-4">
+            {rooms.map((room) => (
+              <div key={room._id} className="flex m-3 p-3 rounded-2xl shadow-[3px_3px_10px_-1px_gray]">
+                <Link to={`/room-detail/${room._id}`}>
+                  <RoomCard room={room} />
+                </Link>
+                <div className="flex flex-col grow text-right justify-between">
+                  {priceType === "byHour" && (
+                    <div className="">
+                      <div className="text-2xl">
+                        {room.roomType.prices.hour.toLocaleString("vi-VN")}đ
+                      </div>
+                      <div>Giá cho 1 giờ</div>
                     </div>
-                    <div>Giá cho 1 giờ</div>
-                  </div>
-                )}
-                {priceType === "halfDay" && (
-                  <div className="">
-                    <div>
-                      <span>Chỉ từ</span>
-                      <span className="ml-2 text-2xl">
-                        {room.roomType.prices.weekday.halfDay.toLocaleString(
-                          "vi-VN"
-                        )}
-                        đ
-                      </span>
+                  )}
+                  {priceType === "halfDay" && (
+                    <div className="">
+                      <div>
+                        <span>Chỉ từ</span>
+                        <span className="ml-2 text-2xl">
+                          {room.roomType.prices.weekday.halfDay.toLocaleString(
+                            "vi-VN"
+                          )}
+                          đ
+                        </span>
+                      </div>
+                      <div>Giá qua đêm</div>
                     </div>
-                    <div>Giá qua đêm</div>
-                  </div>
-                )}
-                {priceType === "byDay" && (
-                  <div className="">
-                    <div>
-                      <span>Chỉ từ</span>
-                      <span className="ml-2 text-2xl">
-                        {room.roomType.prices.weekday.allDay.toLocaleString(
-                          "vi-VN"
-                        )}
-                        đ
-                      </span>
+                  )}
+                  {priceType === "byDay" && (
+                    <div className="">
+                      <div>
+                        <span>Chỉ từ</span>
+                        <span className="ml-2 text-2xl">
+                          {room.roomType.prices.weekday.allDay.toLocaleString(
+                            "vi-VN"
+                          )}
+                          đ
+                        </span>
+                      </div>
+                      <div>Giá cho 1 ngày</div>
                     </div>
-                    <div>Giá cho 1 ngày</div>
-                  </div>
-                )}
-                <button
-                  className="border-2 border-brand-accent rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-accent transition duration-200"
-                  onClick={() => handleBook(room._id)}
-                >
-                  Đặt phòng
-                </button>
+                  )}
+                  <button
+                    className="border-2 border-brand-accent rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-accent transition duration-200"
+                    onClick={() => handleBook(room._id)}
+                  >
+                    Đặt phòng
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}            
+          </div>
         </div>
       </div>
     </div>
