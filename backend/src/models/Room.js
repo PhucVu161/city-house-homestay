@@ -7,7 +7,10 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    style: {
+      type: String,
+      required: true,
+    },
     // Tòa nhà mà phòng đó thuộc về
     house: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,11 +42,13 @@ const roomSchema = new mongoose.Schema(
           "Thang máy",
           "Bếp nấu",
           "Bồn tắm",
-          "Tủ check-in",
+          "Tự check-in",
           "Giặt sấy",
           "Ban công",
           "Điều hòa",
           "Máy lọc không khí",
+          "Chỗ gửi xe",
+          "Có gạo và mì",
         ],
         required: true,
       },

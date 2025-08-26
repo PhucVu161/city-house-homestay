@@ -130,7 +130,7 @@ export default function SearchRoom() {
                     </div>
                   )}
                   <button
-                    className="border-2 border-brand-accent rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-accent transition duration-200"
+                    className="border-2 border-brand-cool rounded-4xl px-6 py-3 self-end hover:text-brand-light hover:bg-brand-cool transition duration-200"
                     onClick={() => handleBook(room._id)}
                   >
                     Đặt phòng

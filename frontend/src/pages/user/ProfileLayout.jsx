@@ -25,7 +25,7 @@ export default function ProfileLayout() {
             to={item.path}
             key={item.key}
             className={`p-3 ${
-              isSelected === item.key ? "border-b-4 border-brand-main text-brand-main" : ""
+              isSelected === item.key ? "border-b-4 border-brand-warm text-brand-warm" : ""
             }`}
             onClick={() => {
               setIsSelected(item.key);

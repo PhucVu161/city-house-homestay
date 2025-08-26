@@ -35,7 +35,7 @@ export default function RoomBooking() {
         <InfoBooking allowChange="hidden" />
       </div>
       <div>
-        <div className="text-xl font-semibold border-t-2 border-brand-accent py-3 mt-16">
+        <div className="text-xl font-semibold border-t-2 border-brand-cool py-3 mt-16">
           Vui lòng chọn hình thức thanh toán
         </div>
         <div className="flex flex-col ml-6 gap-6">
@@ -66,7 +66,7 @@ export default function RoomBooking() {
         </div>
       </div>
       <div className="self-center mb-16 mt-10">
-        <button className="bg-brand-accent rounded-full p-3 text-brand-light my-4 hover:scale-110 hover:shadow-[1px_1px_8px_0px_black] active:bg-brand-accent/75"
+        <button className="bg-brand-cool rounded-full p-3 text-brand-light my-4 hover:scale-110 hover:shadow-[1px_1px_8px_0px_black] active:bg-brand-cool/75"
           onClick={handleConfirmBooking}
         >
           Xác nhận thanh toán

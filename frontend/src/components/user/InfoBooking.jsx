@@ -80,23 +80,23 @@ export default function InfoBooking({ allowChange = "" }) {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="text-brand-accent">Tổng tiền</div>
-        <div className="text-3xl font-bold text-brand-main">
+        <div className="text-brand-cool">Tổng tiền</div>
+        <div className="text-3xl font-bold text-brand-warm">
           {totalPrice.toLocaleString("vi-VN")}đ
         </div>
       </div>
       <div className={`${allowChange} space-y-2`}>
         <button
-          className="p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200"
+          className="p-4 border-2 border-brand-warm w-full text-brand-warm font-bold rounded-sm hover:bg-brand-warm hover:text-brand-light transition duration-200"
           onClick={handleBook}
         >
           Xác nhận đặt
         </button>
-        <button className="flex justify-center items-center p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
+        <button className="flex justify-center items-center p-4 border-2 border-brand-warm w-full text-brand-warm font-bold rounded-sm hover:bg-brand-warm hover:text-brand-light transition duration-200">
           <PiHeartBold className="text-2xl mr-2"/>
           <span>Lưu yêu thích</span>
         </button>
-        <button className="flex justify-center items-center p-4 border-2 border-brand-main w-full text-brand-main font-bold rounded-sm hover:bg-brand-main hover:text-brand-light transition duration-200">
+        <button className="flex justify-center items-center p-4 border-2 border-brand-warm w-full text-brand-warm font-bold rounded-sm hover:bg-brand-warm hover:text-brand-light transition duration-200">
           <RiShareForwardLine className="text-2xl mr-2" />
           <span>Chia sẻ phòng</span>
         </button>

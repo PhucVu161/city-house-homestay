@@ -22,8 +22,8 @@ function StatusLine({ status }) {
     <>
       {status === "pending" && (
         <div className="flex items-center gap-2">
-          <MdOutlinePending className="text-brand-main"/>
-          <div className="font-semibold text-brand-main">Chờ xác nhận</div>
+          <MdOutlinePending className="text-brand-warm"/>
+          <div className="font-semibold text-brand-warm">Chờ xác nhận</div>
         </div>
       )}
       {status === "cancelled" && (

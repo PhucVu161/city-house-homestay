@@ -60,7 +60,7 @@ export default function MyBooking() {
             key={item.key}
             className={`p-3 ${
               isSelected === item.key
-                ? "border-b-4 border-brand-main text-brand-main"
+                ? "border-b-4 border-brand-warm text-brand-warm"
                 : ""
             }`}
             onClick={() => {

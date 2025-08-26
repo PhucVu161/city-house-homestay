@@ -62,7 +62,7 @@ export default function RoomDetail() {
     <div className="flex flex-col bg-brand-light px-36 pt-16">
       {/* Tiêu đề */}
       <div>
-        <h1 className="text-5xl">Phòng {room.roomCode}</h1>
+        <h1 className="text-5xl">Phòng {room.roomCode} {room.style}</h1>
         <div>
           <div className="flex items-center my-2 gap-1">
             <GiPositionMarker />
@@ -115,24 +115,24 @@ export default function RoomDetail() {
             </div>
           </div>
           {/* Tiện ích phòng */}
-          <div className="text-brand-accent mt-8 border-2 border-brand-accent">
+          <div className="text-brand-cool mt-8 border-2 border-brand-cool">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">
               Tiện ích
             </h1>
             <div></div>
           </div>
           {/* Mô tả phòng */}
-          <div className="text-brand-accent mt-8">
+          <div className="text-brand-cool mt-8">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">Mô tả</h1>
             <span>{`Căn homestay này thuộc hàng phòng ${room.roomType.rank} của chúng tôi, và nằm ở vị trí ${room.house.address}. `}</span>
             <span>{room.description}</span>
           </div>
           {/* Mức giá phòng */}
-          <div className="text-brand-accent mt-8 border-t-2 border-brand-accent/30">
+          <div className="text-brand-cool mt-8 border-t-2 border-brand-cool/30">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">Mức giá</h1>
           </div>
           {/* Đánh giá phòng */}
-          <div className="text-brand-accent mt-8 border-t-2 border-brand-accent/30">
+          <div className="text-brand-cool mt-8 border-t-2 border-brand-cool/30">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">
               Đánh giá
             </h1>

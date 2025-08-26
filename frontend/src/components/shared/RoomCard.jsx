@@ -9,7 +9,7 @@ export default function RoomCard({ room }) {
         className="w-[360px] h-[220px] rounded-2xl"
       />
       <div className="ml-6 space-y-[4px] w-[630px] text-md">
-        <div className="text-3xl">{room.roomCode}</div>
+        <div className="text-3xl">{`${room.roomCode} - ${room.style}`}</div>
         <div>{`Hạng phòng: ${room.roomType.rank}`}</div>
         <div>{`Địa chỉ: ${room.house.address}`}</div>
         <div>

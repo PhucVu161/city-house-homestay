@@ -30,7 +30,7 @@ export default function RoomBookingSuccess() {
   return (
     <div className="flex items-center gap-16 bg-brand-light px-36 py-16">
       <div className="flex-1 flex flex-col gap-6">
-        <GiConfirmed className="text-8xl text-brand-accent" />
+        <GiConfirmed className="text-8xl text-brand-cool" />
         <div className="text-6xl font-bold leading-snug">
           Tạo đơn đặt phòng thành công
         </div>
@@ -44,7 +44,7 @@ export default function RoomBookingSuccess() {
         <div className="flex gap-10">
           <Link
             to={"/my-booking"}
-            className="py-3 px-8 rounded-full bg-brand-accent text-brand-light"
+            className="py-3 px-8 rounded-full bg-brand-cool text-brand-light"
           >
             Xem đơn của bạn
           </Link>
@@ -64,7 +64,7 @@ export default function RoomBookingSuccess() {
             </div>
             <div className="text-sm">Tổng tiền thanh toán</div>
           </div>
-          <GrMoney size={63} className="text-brand-main" />
+          <GrMoney size={63} className="text-brand-warm" />
         </div>
         <div className="flex flex-col bg-white rounded-2xl p-10 gap-8">
           <div className="font-bold text-2xl">Thông tin đặt phòng</div>
@@ -82,7 +82,7 @@ export default function RoomBookingSuccess() {
           <Line
             label={"Trạng thái đơn"}
             value={
-              <button className="bg-brand-main p-3 rounded-md text-brand-light">
+              <button className="bg-brand-warm p-3 rounded-md text-brand-light">
                 Chờ xác nhận
               </button>
             }

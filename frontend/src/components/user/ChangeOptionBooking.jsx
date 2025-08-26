@@ -48,7 +48,7 @@ export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
           {BOOKING_TYPES.map((type) => (
             <div
               className={`my-2 cursor-pointer hover:text-orange-500 ${
-                type.key === bookingType ? "border-b-2 border-brand-main" : ""
+                type.key === bookingType ? "border-b-2 border-brand-warm" : ""
               }`}
               key={type.key}
               onClick={()=>handleChangeType(type)}
@@ -59,12 +59,12 @@ export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
         </div>
         {/* Lịch lựa chọn thời gian theo loại */}
         <div className="flex justify-center gap-4">
-          <div className="flex justify-between items-center border-2 border-brand-accent rounded-[40px] p-2 gap-2 relative">
+          <div className="flex justify-between items-center border-2 border-brand-cool rounded-[40px] p-2 gap-2 relative">
             <div
               className="h-full grow hover:bg-gray-100 flex rounded-4xl justify-around items-center"
               onClick={() => setShowPicker(!showPicker)}
             >
-              <FaCalendarDays size={30} className="text-brand-accent " />
+              <FaCalendarDays size={30} className="text-brand-cool " />
               <div className="w-36 text-center">
                 <div>Nhận phòng</div>
                 <div>
@@ -73,7 +73,7 @@ export default function ChangeOptionBooking({ setIsOpenChangeOption }) {
                     : "Bất kỳ"}
                 </div>
               </div>
-              <FaArrowRightLong size={30} className="text-brand-accent " />
+              <FaArrowRightLong size={30} className="text-brand-cool " />
               <div className="w-36 text-center">
                 <div>Trả phòng</div>
                 <div>
