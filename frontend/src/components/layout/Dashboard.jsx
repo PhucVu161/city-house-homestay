@@ -42,15 +42,15 @@ export default function Dashboard() {
     navigate("/");
   };
   return (
-    <div className="flex flex-col gap-12 min-h-screen border-r-2 border-gray-300 p-6">
+    <div className="flex flex-col gap-12 min-h-screen p-6 bg-brand-light">
       {/* Phần logo */}
       <div className="flex items-center">
-        <img src="/image.png" alt="" className="w-8" />
+        <img src="/logo.jpg" alt="" className="w-8" />
         <div className="font-bold text-2xl text-brand-warm">City House</div>
       </div>
       {/* Phần người dùng */}
-      <div className="flex w-63 gap-2 py-2 px-4 bg-gray-100 rounded-md">
-        <img src="/logo.jpg" alt="" className="w-12 rounded-full" />
+      <div className="flex w-63 gap-2 py-2 px-4 bg-brand-light2 rounded-md">
+        <img src="/admin_avt.png" alt="" className="w-12 rounded-full" />
         <div>
           <div className="font-bold">Phuc Vu</div>
           <div className="text-sm">phucvu@gmail.com</div>
