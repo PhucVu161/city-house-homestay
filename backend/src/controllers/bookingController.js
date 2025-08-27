@@ -123,10 +123,15 @@ export const cancelMyBooking = async (req, res) => {
 export const getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find()
-      .populate("roomId") // Lấy thông tin phòng
+      .populate({
+        path: "roomId",
+        populate: [
+          { path: "house" },      // Lấy thông tin nhà
+          { path: "roomType" }    // Lấy thông tin loại phòng
+        ]
+      })
       .populate("userId") // Lấy thông tin người đặt
       .sort({ createdAt: -1 });
-
     res.status(200).json({ bookings });
   } catch (error) {
     res.status(500).json({ message: error.message });

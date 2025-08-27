@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -6,20 +10,24 @@ import dayjs from "dayjs";
 export const selectBookingsByStatus = createSelector(
   [(state) => state.booking.list, (_, status) => status],
   (bookings, status) => {
-    switch(status){
+    switch (status) {
       case "all":
         return bookings;
       case "confirmed":
-        return bookings.filter((booking) => booking.status === "confirmed").filter((booking) => (new Date(booking.checkOut) > new Date()));
+        return bookings
+          .filter((booking) => booking.status === "confirmed")
+          .filter((booking) => new Date(booking.checkOut) > new Date());
       case "completed":
-        return bookings.filter((booking) => booking.status === "confirmed").filter((booking) => (new Date(booking.checkOut) < new Date()));
+        return bookings
+          .filter((booking) => booking.status === "confirmed")
+          .filter((booking) => new Date(booking.checkOut) < new Date());
       default:
         return bookings.filter((booking) => booking.status === status);
     }
   }
 );
 
-// Thunk lấy thông tin phòng đang book
+// Thunk lấy thông tin phòng đang tạo booking
 export const fetchRoomById = createAsyncThunk(
   "room/fetchRoomById",
   async (roomId, { rejectWithValue }) => {
@@ -100,6 +108,79 @@ export const userCancelBooking = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Lỗi không xác định"
+      );
+    }
+  }
+);
+
+// Thunk dành cho admin để lấy toàn bộ danh sách booking
+export const fetchAllBookings = createAsyncThunk(
+  "booking/fetchAllBookings",
+  async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("Không tìm thấy token");
+
+    try {
+      const response = await axios.get("http://localhost:4000/booking", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.bookings; // Trả về danh sách booking đã populate đầy đủ
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          "Lỗi không xác định khi lấy danh sách booking"
+      );
+    }
+  }
+);
+//Thunk cho admin hủy đơn booking theo bookingId
+export const adminCancelBooking = createAsyncThunk(
+  "booking/adminCancelBooking",
+  async (bookingId, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("Không tìm thấy token");
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:4000/booking/cancel/${bookingId}`,
+        {}, // Không cần body, chỉ cần ID và token
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return bookingId; // Trả về ID để reducer cập nhật trạng thái
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Hủy đơn thất bại"
+      );
+    }
+  }
+);
+//Thunk cho admin xác nhận đơn booking theo bookingId
+export const adminConfirmBooking = createAsyncThunk(
+  "booking/adminConfirmBooking",
+  async (bookingId, { rejectWithValue }) => {
+    const token = localStorage.getItem("token");
+    if (!token) return rejectWithValue("Không tìm thấy token");
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:4000/booking/confirm/${bookingId}`,
+        {}, // Không cần body, chỉ cần ID và token
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return bookingId; // Trả về ID để reducer cập nhật trạng thái
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Xác nhận đơn thất bại"
       );
     }
   }
@@ -262,6 +343,53 @@ const bookingSlice = createSlice({
       .addCase(userCancelBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Hủy booking thất bại";
+      })
+      // Admin lấy danh sách tất cả booking
+      .addCase(fetchAllBookings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllBookings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload;
+      })
+      .addCase(fetchAllBookings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //admin hủy đơn
+      .addCase(adminCancelBooking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(adminCancelBooking.fulfilled, (state, action) => {
+        state.loading = false;
+        const bookingId = action.payload;
+        const index = state.list.findIndex((b) => b._id === bookingId);
+        if (index !== -1) {
+          state.list[index].status = "cancelled";
+        }
+      })
+      .addCase(adminCancelBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //admin xác nhận đơn
+      .addCase(adminConfirmBooking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(adminConfirmBooking.fulfilled, (state, action) => {
+        state.loading = false;
+        const bookingId = action.payload;
+        const index = state.list.findIndex((b) => b._id === bookingId);
+        if (index !== -1) {
+          state.list[index].status = "confirmed";
+        }
+      })
+      .addCase(adminConfirmBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

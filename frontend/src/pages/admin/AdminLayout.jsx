@@ -5,7 +5,7 @@ export default function AdminLayout() {
   return (
     <div className="flex">
       <Dashboard />
-      <div className="grow px-16 pt-16 pb-6">
+      <div className="grow pl-[360px] pr-16 pt-10 pb-6">
         <Outlet />
       </div>
     </div>

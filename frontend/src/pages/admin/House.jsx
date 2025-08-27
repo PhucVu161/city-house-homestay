@@ -25,18 +25,24 @@ export default function House() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-          <div className="flex items-center gap-6">
-            <div className="grow border-2 border-gray-300 rounded-md p-2">Tìm kiếm</div>
-            <button className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md" onClick={handleAdd}>
-              <MdAddHome />
-              <span>Thêm phòng</span>
-            </button>
-            <div>
-              <span>Sắp xếp: </span>
-              <span className="p-2 bg-gray-200 rounded-md">Gần đây nhất</span>
-            </div>
-          </div>
+    <div className="flex flex-col h-full relative">
+      {/* Thanh tìm kiếm, thêm và sắp xếp danh sách */}
+      <div className="flex items-center gap-6">
+        <div className="grow border-2 border-gray-300 rounded-md p-2">
+          Tìm kiếm
+        </div>
+        <button
+          className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md"
+          onClick={handleAdd}
+        >
+          <MdAddHome />
+          <span>Thêm tòa nhà</span>
+        </button>
+        <div>
+          <span>Sắp xếp: </span>
+          <span className="p-2 bg-gray-200 rounded-md">Gần đây nhất</span>
+        </div>
+      </div>
       {/* Bảng có div để bo góc */}
       <div className="rounded-md overflow-hidden shadow mt-4">
         <table className="w-full text-left border-collapse">
@@ -78,7 +84,7 @@ export default function House() {
               </tr>
             ))}
           </tbody>
-        </table>        
+        </table>
       </div>
 
       {isDisplayForm && (

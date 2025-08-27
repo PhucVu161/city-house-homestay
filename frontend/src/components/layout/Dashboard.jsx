@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { logout } from "../../redux/slices/authSlice";
-import { AiOutlineDashboard } from "react-icons/ai";
 import { IoIosApps } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import { MdAddHomeWork } from "react-icons/md";
@@ -42,7 +41,7 @@ export default function Dashboard() {
     navigate("/");
   };
   return (
-    <div className="flex flex-col gap-12 min-h-screen p-6 bg-brand-light">
+    <div className="flex flex-col gap-12 h-screen p-6 bg-brand-light fixed left-0">
       {/* Phần logo */}
       <div className="flex items-center">
         <img src="/logo.jpg" alt="" className="w-8" />
@@ -59,10 +58,19 @@ export default function Dashboard() {
       {/* Phần menu trên */}
       <div className="grow text-xl space-y-2">
         {OPTIONS.map((option) => (
-          <div key={option.path} className="flex items-center gap-2 p-3 hover:text-brand-warm cursor-pointer">
+          <NavLink
+            key={option.path}
+            to={option.path}
+            {...(option.path === "/admin" ? { end: true } : {})}
+            className={({ isActive }) =>
+              `${
+                isActive ? "bg-brand-cool3 text-brand-warm rounded-2xl" : ""
+              } flex items-center gap-2 p-3 hover:text-brand-warm cursor-pointer`
+            }
+          >
             {option.icon}
-            <Link to={option.path}>{option.name}</Link>
-          </div>
+            <span>{option.name}</span>
+          </NavLink>
         ))}
       </div>
       {/* Phần menu dưới */}

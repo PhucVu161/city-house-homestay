@@ -4,9 +4,7 @@ import { MdMoreTime } from "react-icons/md";
 import { GiPositionMarker } from "react-icons/gi";
 import { TbArrowLeftFromArc, TbArrowRightFromArc } from "react-icons/tb";
 import { GrMoney } from "react-icons/gr";
-import { MdOutlinePending } from "react-icons/md";
-import { FcCancel } from "react-icons/fc";
-import { GiConfirmed } from "react-icons/gi";
+import { BookingStatusLine }from "../";
 
 function Line({ icon, name, value }) {
   return (
@@ -15,30 +13,6 @@ function Line({ icon, name, value }) {
       {name && <div>{name}</div>}
       <div className="font-semibold">{value}</div>
     </div>
-  );
-}
-function StatusLine({ status }) {
-  return (
-    <>
-      {status === "pending" && (
-        <div className="flex items-center gap-2">
-          <MdOutlinePending className="text-brand-warm"/>
-          <div className="font-semibold text-brand-warm">Chờ xác nhận</div>
-        </div>
-      )}
-      {status === "cancelled" && (
-        <div className="flex items-center gap-2">
-          <FcCancel/>
-          <div className="font-semibold text-red-600">Đã hủy</div>
-        </div>
-      )}
-      {status === "confirmed" && (
-        <div className="flex items-center gap-2">
-          <GiConfirmed className="text-green-600"/>
-          <div className="font-semibold text-green-600">Đã xác nhận</div>
-        </div>
-      )}
-    </>
   );
 }
 
@@ -73,7 +47,7 @@ export default function BookingCard({ booking }) {
           icon={<GrMoney />}
           value={booking.totalPrice.toLocaleString("vi-VN") + "đ"}
         />
-        <StatusLine status={booking.status} />
+        <BookingStatusLine status={booking.status} />
       </div>
     </div>
   );

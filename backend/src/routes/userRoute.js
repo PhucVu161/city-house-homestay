@@ -1,5 +1,5 @@
-import { currentUser, updateCurrentUser, changePassword } from "../controllers/userController.js";
-import { authenticateToken } from "../middleware/authMiddleware.js";
+import { currentUser, updateCurrentUser, changePassword, getAllUsers } from "../controllers/userController.js";
+import { authenticateToken, authorizeAdmin } from "../middleware/authMiddleware.js";
 import express from 'express';
 const router = express.Router();
 
@@ -7,5 +7,8 @@ const router = express.Router();
 router.get("/me", authenticateToken, currentUser);
 router.put("/me", authenticateToken, updateCurrentUser);
 router.put("/me/password", authenticateToken, changePassword);
+
+//Admin manage
+router.get("/all", authenticateToken, authorizeAdmin, getAllUsers);
 
 export default router

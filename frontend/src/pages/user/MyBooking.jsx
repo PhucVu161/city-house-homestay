@@ -7,29 +7,7 @@ import {
 } from "../../redux/slices/bookingSlice";
 import { BookingCard } from "../../components";
 import { SlNote } from "react-icons/sl";
-
-const OPTIONS = [
-  {
-    key: "all",
-    name: "Tất cả",
-  },
-  {
-    key: "pending",
-    name: "Chờ xác nhận",
-  },
-  {
-    key: "confirmed",
-    name: "Đã xác nhận",
-  },
-  {
-    key: "completed",
-    name: "Đã hoàn thành",
-  },
-  {
-    key: "cancelled",
-    name: "Đã hủy",
-  },
-];
+import { BOOKING_STATUS_OPTIONS } from "../../constants/bookingStatusOptions";
 
 export default function MyBooking() {
   const [isSelected, setIsSelected] = useState("all");
@@ -55,7 +33,7 @@ export default function MyBooking() {
       <div className="text-2xl font-bold">Đơn đặt phòng của tôi</div>
       {/* Các lựa chọn trạng thái để lọc đơn đặt phòng */}
       <div className="flex items-center gap-5 border-b-2 border-gray-200">
-        {OPTIONS.map((item) => (
+        {BOOKING_STATUS_OPTIONS.map((item) => (
           <button
             key={item.key}
             className={`p-3 ${

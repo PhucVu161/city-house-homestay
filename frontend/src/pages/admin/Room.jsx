@@ -34,7 +34,7 @@ export default function Room() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
       {/* Thanh tìm kiếm, thêm và sắp xếp danh sách */}
       <div className="flex items-center gap-6">
         <div className="grow border-2 border-gray-300 rounded-md p-2">
@@ -73,12 +73,12 @@ export default function Room() {
                 key={room._id}
                 className="bg-brand-light2 hover:bg-gray-50 transition"
               >
-                <td className="p-3">{room.roomCode}</td>
-                <td className="p-3">{room.style}</td>
-                <td className="p-3">{room.roomType.rank}</td>
-                <td className="p-3">Tòa {room.house.code}</td>
-                <td className="p-3">{room.house.address}</td>
-                <td className="p-3">
+                <td className="p-2">{room.roomCode}</td>
+                <td className="p-2">{room.style}</td>
+                <td className="p-2">{room.roomType.rank}</td>
+                <td className="p-2">Tòa {room.house.code}</td>
+                <td className="p-2">{room.house.address}</td>
+                <td className="p-2">
                   <div className="flex justify-end gap-4">
                     <button
                       className="flex items-center gap-2 bg-brand-warm2 text-brand-light3 p-2 rounded-md cursor-pointer"
@@ -99,7 +99,7 @@ export default function Room() {
               </tr>
             ))}
           </tbody>
-        </table>        
+        </table>
       </div>
 
       {isDisplayForm && (

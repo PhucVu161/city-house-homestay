@@ -48,17 +48,23 @@ export default function RoomType() {
 
   return (
     <div className="flex flex-col h-full">
-          <div className="flex items-center gap-6">
-            <div className="grow border-2 border-gray-300 rounded-md p-2">Tìm kiếm</div>
-            <button className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md" onClick={handleAdd}>
-              <MdAddHome />
-              <span>Thêm phòng</span>
-            </button>
-            <div>
-              <span>Sắp xếp: </span>
-              <span className="p-2 bg-gray-200 rounded-md">Gần đây nhất</span>
-            </div>
-          </div>
+      {/* Thanh tìm kiếm, thêm và sắp xếp danh sách */}
+      <div className="flex items-center gap-6">
+        <div className="grow border-2 border-gray-300 rounded-md p-2">
+          Tìm kiếm
+        </div>
+        <button
+          className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md"
+          onClick={handleAdd}
+        >
+          <MdAddHome />
+          <span>Thêm hạng phòng</span>
+        </button>
+        <div>
+          <span>Sắp xếp: </span>
+          <span className="p-2 bg-gray-200 rounded-md">Gần đây nhất</span>
+        </div>
+      </div>
       {/* Bảng có div để bo góc */}
       <div className="rounded-md overflow-hidden shadow mt-4">
         <table className="w-full text-left border-collapse">
@@ -82,9 +88,17 @@ export default function RoomType() {
               >
                 <td className="p-3">{roomType.rank}</td>
                 <td className="p-3">{roomType.area}</td>
-                <td className="p-3">{roomType.prices.hour}</td>
-                <td className="p-3">{roomType.prices.weekday.halfDay} - {roomType.prices.weekend.halfDay}</td>
-                <td className="p-3">{roomType.prices.weekday.allDay} - {roomType.prices.weekend.allDay}</td>
+                <td className="p-3">
+                  {roomType.prices.hour.toLocaleString()}đ
+                </td>
+                <td className="p-3">
+                  {roomType.prices.weekday.halfDay.toLocaleString()}đ -{" "}
+                  {roomType.prices.weekend.halfDay.toLocaleString()}đ
+                </td>
+                <td className="p-3">
+                  {roomType.prices.weekday.allDay.toLocaleString()}đ -{" "}
+                  {roomType.prices.weekend.allDay.toLocaleString()}đ
+                </td>
                 <td className="p-3">
                   <div className="flex justify-end gap-4">
                     <button
@@ -106,7 +120,7 @@ export default function RoomType() {
               </tr>
             ))}
           </tbody>
-        </table>        
+        </table>
       </div>
 
       {isDisplayForm && (
