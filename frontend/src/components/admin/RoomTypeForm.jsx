@@ -37,62 +37,130 @@ export default function RoomTypeForm({ setIsDisplayForm, formData }) {
 };
 
   return (
-    <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 rounded-xl w-[700px] h-[400px] z-10 bg-white">
-      <div>RoomType Form</div>
-      <div className="grow">
-{/* form các thuộc tính của roomTypeLabel trừ giá */}
-        {ROOMTYPE_LABELS.filter(label=>label.key!=="prices").map((label) => (
-          <div key={label.key}>
-            <label htmlFor={label.key}>{label.name}</label>
-            <input
-                id={label.key}
-              type="text"
-              value={roomTypeForm[label.key] || ""}
-              onChange={(e) => {
-                setRoomTypeForm((pre) => ({
-                  ...pre,
-                  [label.key]: e.target.value,
-                }));
-              }}
-            />
-          </div>
-        ))}
-{/* form nhập giá của room type*/}
-        <div>Giá ngày trong tuần (t2-t5)</div>
-        <div>
-          <label htmlFor="">Ngày đêm</label>
-          <input type="text" value={roomTypeForm?.prices?.weekday.allDay||""} onChange={(e)=>handlePriceChange("weekday", "allDay", e.target.value)}/>
-        </div>
-        <div>
-          <label htmlFor="">Nửa ngày</label>
-          <input type="text" value={roomTypeForm?.prices?.weekday.halfDay||""} onChange={(e)=>handlePriceChange("weekday", "halfDay", e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Buổi trưa hoặc Chiều</label>
-          <input type="text" value={roomTypeForm?.prices?.weekday.timeOfDay||""} onChange={(e)=>handlePriceChange("weekday", "timeOfDay", e.target.value)} />
-        </div>
-        <div>Giá ngày cuối tuần (t6-cn)</div>
-        <div>
-          <label htmlFor="">Ngày đêm</label>
-          <input type="text" value={roomTypeForm?.prices?.weekend.allDay||""} onChange={(e)=>handlePriceChange("weekend", "allDay", e.target.value)}/>
-        </div>
-        <div>
-          <label htmlFor="">Nửa ngày</label>
-          <input type="text" value={roomTypeForm?.prices?.weekend.halfDay||""} onChange={(e)=>handlePriceChange("weekend", "halfDay", e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Buổi trưa hoặc Chiều</label>
-          <input type="text" value={roomTypeForm?.prices?.weekend.timeOfDay||""} onChange={(e)=>handlePriceChange("weekend", "timeOfDay", e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Giá theo giờ</label>
-          <input type="text" value={roomTypeForm?.prices?.hour||""} onChange={(e)=>{setRoomTypeForm((pre)=>({...pre,prices: {...pre.prices, hour: e.target.value}}))}}/>
-        </div>
+<div className="flex flex-col rounded-xl w-[700px] h-[700px] z-10 bg-white p-6 space-y-6 shadow-lg overflow-y-auto">
+  {(formData.type === "Thêm") && <div className="self-center text-2xl font-bold text-yellow-600">Thêm hạng phòng</div>}
+  {(formData.type === "Sửa") && <div className="self-center text-2xl font-bold text-yellow-600">Sửa thông tin hạng phòng</div>}
+
+  <div className="grow space-y-4 text-sm text-gray-700">
+    {/* Các thuộc tính trừ giá */}
+    {ROOMTYPE_LABELS.filter(label => label.key !== "prices").map((label) => (
+      <div key={label.key}>
+        <label htmlFor={label.key} className="block font-medium mb-1">{label.name}</label>
+        <input
+          id={label.key}
+          type="text"
+          value={roomTypeForm[label.key] || ""}
+          onChange={(e) => {
+            setRoomTypeForm((pre) => ({
+              ...pre,
+              [label.key]: e.target.value,
+            }));
+          }}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        />
       </div>
-      <div className="flex justify-around">
-        <button onClick={() => setIsDisplayForm(false)}>Hủy</button>
-        <button onClick={handleClick}>{formData.type}</button>
+    ))}
+
+    {/* Giá ngày trong tuần */}
+    <div className="space-y-2">
+      <div className="font-semibold text-gray-800">Giá ngày trong tuần (T2–T5)</div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <label className="block mb-1">Ngày đêm</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekday.allDay || ""}
+            onChange={(e) => handlePriceChange("weekday", "allDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Nửa ngày</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekday.halfDay || ""}
+            onChange={(e) => handlePriceChange("weekday", "halfDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Trưa/Chiều</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekday.timeOfDay || ""}
+            onChange={(e) => handlePriceChange("weekday", "timeOfDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
       </div>
     </div>
+
+    {/* Giá cuối tuần */}
+    <div className="space-y-2">
+      <div className="font-semibold text-gray-800">Giá cuối tuần (T6–CN)</div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <label className="block mb-1">Ngày đêm</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekend.allDay || ""}
+            onChange={(e) => handlePriceChange("weekend", "allDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Nửa ngày</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekend.halfDay || ""}
+            onChange={(e) => handlePriceChange("weekend", "halfDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Trưa/Chiều</label>
+          <input
+            type="text"
+            value={roomTypeForm?.prices?.weekend.timeOfDay || ""}
+            onChange={(e) => handlePriceChange("weekend", "timeOfDay", e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Giá theo giờ */}
+    <div>
+      <label className="block font-medium mb-1">Giá theo giờ</label>
+      <input
+        type="text"
+        value={roomTypeForm?.prices?.hour || ""}
+        onChange={(e) => {
+          setRoomTypeForm((pre) => ({
+            ...pre,
+            prices: { ...pre.prices, hour: e.target.value },
+          }));
+        }}
+        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+      />
+    </div>
+  </div>
+
+  {/* Nút hành động */}
+  <div className="flex justify-end gap-4 pt-2">
+    <button
+      onClick={() => setIsDisplayForm(false)}
+      className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition"
+    >
+      Hủy
+    </button>
+    <button
+      onClick={handleClick}
+      className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-md transition"
+    >
+      {formData.type}
+    </button>
+  </div>
+</div>
   );
 }

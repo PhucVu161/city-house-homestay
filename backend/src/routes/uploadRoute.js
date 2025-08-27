@@ -3,7 +3,7 @@ import { upload } from "../config/multer.js";
 
 const router = express.Router();
 
-router.post("/", upload.array('images', 10), (req, res) => {
+router.post("/", upload.array('images', 30), (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: 'Không có file nào được upload.' });

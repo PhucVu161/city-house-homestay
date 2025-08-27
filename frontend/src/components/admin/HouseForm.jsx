@@ -24,30 +24,46 @@ export default function HouseForm({ setIsDisplayForm, formData }) {
   };
 
   return (
-    <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 rounded-xl w-[700px] h-[400px] z-10 bg-white">
-      <div>House Form</div>
-      <div className="grow">
-        {HOUSE_LABELS.map((label) => (
-          <div key={label.key}>
-            <label htmlFor={label.key}>{label.name}</label>
-            <input
-              id={label.key}
-              type="text"
-              value={houseForm[label.key] || ""}
-              onChange={(e) => {
-                setHouseForm((pre) => ({
-                  ...pre,
-                  [label.key]: e.target.value,
-                }));
-              }}
-            />
-          </div>
-        ))}
+<div className="flex flex-col rounded-xl w-[750px] h-[600px] z-10 bg-white p-6 space-y-6 shadow-lg overflow-y-auto">
+  {(formData.type === "Thêm") && <div className="self-center text-2xl font-bold text-yellow-600">Thêm tòa nhà mới</div>}
+  {(formData.type === "Sửa") && <div className="self-center text-2xl font-bold text-yellow-600">Sửa thông tin tòa nhà</div>}
+
+  <div className="grow space-y-4 text-sm text-gray-700">
+    {HOUSE_LABELS.map((label) => (
+      <div key={label.key}>
+        <label htmlFor={label.key} className="block font-medium mb-1">
+          {label.name}
+        </label>
+        <input
+          id={label.key}
+          type="text"
+          value={houseForm[label.key] || ""}
+          onChange={(e) =>
+            setHouseForm((pre) => ({
+              ...pre,
+              [label.key]: e.target.value,
+            }))
+          }
+          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        />
       </div>
-      <div className="flex justify-around">
-        <button onClick={() => setIsDisplayForm(false)}>Hủy</button>
-        <button onClick={handleClick}>{formData.type}</button>
-      </div>
-    </div>
+    ))}
+  </div>
+
+  <div className="flex justify-end gap-4 pt-2">
+    <button
+      onClick={() => setIsDisplayForm(false)}
+      className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition"
+    >
+      Hủy
+    </button>
+    <button
+      onClick={handleClick}
+      className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-md transition"
+    >
+      {formData.type}
+    </button>
+  </div>
+</div>
   );
 }

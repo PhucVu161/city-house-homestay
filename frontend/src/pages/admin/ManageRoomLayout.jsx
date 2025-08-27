@@ -2,7 +2,7 @@ import { Outlet, NavLink } from "react-router";
 
 export default function ManageRoomLayout() {
   return (
-    <div className="flex flex-col gap-6 h-full relative">
+    <div className="flex flex-col gap-6 h-full">
       <div className="text-3xl font-bold text-brand-warm">Quản lý phòng</div>
       <div className="flex gap-6 border-b-2 border-gray-200">
         <NavLink

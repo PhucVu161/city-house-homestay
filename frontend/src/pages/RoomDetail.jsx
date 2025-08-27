@@ -79,7 +79,7 @@ export default function RoomDetail() {
       </div>
       {/* Phần thân */}
       <div className="flex gap-16">
-        <div className="grow">
+        <div className="grow max-w-[936px]">
           {/* Ảnh phòng */}
           <div>
             {/* Ảnh chính hiển thị */}

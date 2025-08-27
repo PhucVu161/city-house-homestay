@@ -34,7 +34,7 @@ export default function Room() {
   };
 
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full">
       {/* Thanh tìm kiếm, thêm và sắp xếp danh sách */}
       <div className="flex items-center gap-6">
         <div className="grow border-2 border-gray-300 rounded-md p-2">
@@ -103,7 +103,10 @@ export default function Room() {
       </div>
 
       {isDisplayForm && (
-        <RoomForm setIsDisplayForm={setIsDisplayForm} formData={formData} />
+        // {/* Lớp phủ */}
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 z-40 flex items-center justify-center">
+          <RoomForm setIsDisplayForm={setIsDisplayForm} formData={formData} />
+        </div>
       )}
     </div>
   );

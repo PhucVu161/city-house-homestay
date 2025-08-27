@@ -74,8 +74,9 @@ export default function RoomType() {
               <th className="p-3">Hạng phòng</th>
               <th className="p-3">Diện tích</th>
               <th className="p-3">Giá theo giờ</th>
+              <th className="p-3">Giá theo ngày</th>
               <th className="p-3">Giá qua đêm</th>
-              <th className="p-3">Giá nửa ngày</th>
+              <th className="p-3">Giá trưa/chiều</th>
               <th className="p-3 text-right">Thao tác</th>
             </tr>
           </thead>
@@ -92,12 +93,16 @@ export default function RoomType() {
                   {roomType.prices.hour.toLocaleString()}đ
                 </td>
                 <td className="p-3">
+                  {roomType.prices.weekday.allDay.toLocaleString()}đ -{" "}
+                  {roomType.prices.weekend.allDay.toLocaleString()}đ
+                </td>
+                <td className="p-3">
                   {roomType.prices.weekday.halfDay.toLocaleString()}đ -{" "}
                   {roomType.prices.weekend.halfDay.toLocaleString()}đ
                 </td>
                 <td className="p-3">
-                  {roomType.prices.weekday.allDay.toLocaleString()}đ -{" "}
-                  {roomType.prices.weekend.allDay.toLocaleString()}đ
+                  {roomType.prices.weekday.timeOfDay.toLocaleString()}đ -{" "}
+                  {roomType.prices.weekend.timeOfDay.toLocaleString()}đ
                 </td>
                 <td className="p-3">
                   <div className="flex justify-end gap-4">
@@ -124,7 +129,10 @@ export default function RoomType() {
       </div>
 
       {isDisplayForm && (
-        <RoomTypeForm setIsDisplayForm={setIsDisplayForm} formData={formData} />
+        // {/* Lớp phủ */}
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 z-40 flex items-center justify-center">
+          <RoomTypeForm setIsDisplayForm={setIsDisplayForm} formData={formData} />
+        </div>
       )}
     </div>
   );
