@@ -43,7 +43,7 @@ export default function Login() {
         ← Back home
       </Link>
       {/* Lớp phủ + căn giữa */}
-      <div className="fixed inset-0 flex items-center justify-center bg-brand-warm/10 backdrop-blur-2xl p-4">
+      <div className="fixed inset-0 flex items-center justify-center bg-brand-warm/10 backdrop-blur-3xl p-4">
         {/* Thẻ chứa form + ảnh */}
         <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-neutral-200">
           <div className="grid md:grid-cols-2">

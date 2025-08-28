@@ -7,8 +7,9 @@ export default function Footer() {
         <div className="flex justify-around gap-10">
           {/* Giới thiệu nhanh & Mạng xã hội */}
           <div className="w-60 space-y-4">
-            <div>
-              <h3 className="text-2xl font-semibold">CITYHOUSE</h3>
+            <div className="flex items-center">
+              <img className="w-10" src="image.png" alt="" />
+              <h3 className="text-3xl font-semibold">CITYHOUSE</h3>
             </div>
             <p>Không gian trải nghiệm hẹn hò hàng đầu tại Hà Nội</p>
             <p>100+ Homestay tại Hà Nội</p>

@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentUser } from "./redux/slices/authSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ScrollToTop } from "./components";
 
 const ProtectedRoute = ({
   isAuthenticated,
@@ -65,6 +66,8 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -123,7 +126,6 @@ function App() {
           <Route path="manage-user" element={<ManageUser />} />
         </Route>
       </Routes>
-      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

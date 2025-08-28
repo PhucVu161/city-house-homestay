@@ -43,6 +43,8 @@ export default function House() {
           <span className="p-2 bg-gray-200 rounded-md">Gần đây nhất</span>
         </div>
       </div>
+      {/* Chú thích hiển thị số lượng */}
+      <div className="text-sm italic text-gray-500 mt-4">Bạn có {houses.length} tòa nhà</div>
       {/* Bảng có div để bo góc */}
       <div className="rounded-md overflow-hidden shadow mt-4">
         <table className="w-full text-left border-collapse">

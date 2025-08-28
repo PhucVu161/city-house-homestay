@@ -54,8 +54,8 @@ export default function AdminHomepage() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-8 mt-16">
-        <TotalCard icon={<BsBuildingsFill className="text-blue-300" />} name={"Tổng số phòng phòng"} value={rooms ? rooms.length : "0"} />
-        <TotalCard icon={<FaUsers className="text-blue-300" />} name={"Tổng người dùng"} value={users ? users.length : "0"} />
+        <TotalCard icon={<BsBuildingsFill className="text-blue-400" />} name={"Tổng số phòng phòng"} value={rooms ? rooms.length : "0"} />
+        <TotalCard icon={<FaUsers className="text-blue-400" />} name={"Tổng người dùng"} value={users ? users.length : "0"} />
         <TotalCard icon={<LuChartColumnIncreasing className="text-brand-cool2" />} name={"Tổng số đơn đặt phòng"} value={bookings ? bookings.length : "0"} />
         <TotalCard icon={<BsCashCoin className="text-brand-warm2" />} name={"Tổng doanh thu"} value={totalRevenue.toLocaleString("vi-VN", { style: "currency", currency: "VND" })} />
       </div>

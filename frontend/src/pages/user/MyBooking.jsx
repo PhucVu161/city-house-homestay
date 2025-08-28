@@ -30,7 +30,7 @@ export default function MyBooking() {
   }
   return (
     <div className="flex flex-col px-36 py-16">
-      <div className="text-2xl font-bold">Đơn đặt phòng của tôi</div>
+      <div className="text-4xl text-brand-warm font-bold mb-4">Đơn đặt phòng của tôi</div>
       {/* Các lựa chọn trạng thái để lọc đơn đặt phòng */}
       <div className="flex items-center gap-5 border-b-2 border-gray-200">
         {BOOKING_STATUS_OPTIONS.map((item) => (

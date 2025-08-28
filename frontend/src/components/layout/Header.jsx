@@ -35,7 +35,7 @@ export default function Header() {
             className="relative hover:bg-orange-300 p-2 rounded-2xl cursor-pointer transition-colors duration-200 select-none"
             onClick={() => setIsOpen((pre) => !pre)}
           >
-            <div className="font-semibold">Welcome {user.username}</div>
+            <div className="font-semibold">Xin chào, {user.username}</div>
 
             {isOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 z-20">

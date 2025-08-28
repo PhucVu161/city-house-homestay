@@ -16,5 +16,6 @@ export { default as Filter } from './user/Filter';
 
 export { default as RoomCard } from './shared/RoomCard';
 export { default as BookingCard } from './shared/BookingCard';
+export { default as ScrollToTop } from './shared/ScrollToTop';
 
 export { default as BookingStatusLine } from './ui/BookingStatusLine';
