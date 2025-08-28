@@ -10,10 +10,10 @@ export const currentUser = async (req, res) => {
 
 // UPDATE PROFILE CURRENT USER
 export const updateCurrentUser = async (req, res) => {
-  const { username, email } = req.body;
+  const { username, email, phone } = req.body;
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
-    { username, email },
+    { username, email, phone },
     { new: true }
   ).select('-password');
   res.json(updatedUser);

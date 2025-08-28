@@ -118,7 +118,7 @@ export default function ManageBooking() {
                         {booking.userId.phone}
                       </div>
                     </td>
-                    <td className="p-2">
+                    <td className="p-2 w-56">
                       <div className="font-semibold">
                         Phòng {booking.roomId.roomCode}
                       </div>
@@ -144,7 +144,7 @@ export default function ManageBooking() {
                     <td className="p-2 text-sm">
                       <BookingStatusLine status={booking.status} />
                     </td>
-                    <td className="p-2 text-sm">
+                    <td className="text-sm">
                       <div className="flex items-center gap-4">
                         {/* Nút Chi tiết luôn hiển thị */}
                         <button className="flex h-10 w-22 items-center gap-2 bg-blue-400 text-brand-light3 p-2 rounded-md cursor-pointer">
