@@ -22,6 +22,7 @@ export const registerUser = async (req, res) => {
     // Create new user
     const newUser = new User({
       username: req.body.username,
+      phone: req.body.phone,
       email: req.body.email,
       password: hashed,
     });
@@ -36,7 +37,7 @@ export const registerUser = async (req, res) => {
     if (err.code === 11000) {
       return res
         .status(400)
-        .json({ message: "Username or email already exists" });
+        .json({ message: "Phone or email already exists" });
     }
     res.status(500).json({ message: "Failed to register user" });
   }
@@ -45,9 +46,9 @@ export const registerUser = async (req, res) => {
 // LOGIN
 export const loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid username" });
+      return res.status(401).json({ message: "Invalid email" });
     }
     const validPassword = await bcrypt.compare(
       req.body.password,

@@ -30,7 +30,7 @@ export const fetchCurrentUser = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // { id, name, email }
+      return response.data; // { id, isAdmin }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }

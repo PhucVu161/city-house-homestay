@@ -68,7 +68,7 @@ export default function ManageBooking() {
           Tìm kiếm
         </div>
         <button className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md">
-          <span>no name</span>
+          <span>Tìm kiếm</span>
         </button>
         <div>
           <span>Sắp xếp: </span>
@@ -114,6 +114,9 @@ export default function ManageBooking() {
                       <div className="italic text-sm">
                         {booking.userId.email}
                       </div>
+                      <div className="text-sm">
+                        {booking.userId.phone}
+                      </div>
                     </td>
                     <td className="p-2">
                       <div className="font-semibold">
@@ -142,9 +145,9 @@ export default function ManageBooking() {
                       <BookingStatusLine status={booking.status} />
                     </td>
                     <td className="p-2 text-sm">
-                      <div className="flex gap-4">
+                      <div className="flex items-center gap-4">
                         {/* Nút Chi tiết luôn hiển thị */}
-                        <button className="flex items-center gap-2 bg-blue-400 text-brand-light3 p-2 rounded-md cursor-pointer">
+                        <button className="flex h-10 w-22 items-center gap-2 bg-blue-400 text-brand-light3 p-2 rounded-md cursor-pointer">
                           <FaEye />
                           <span>Chi tiết</span>
                         </button>
@@ -152,14 +155,14 @@ export default function ManageBooking() {
                         {booking.status === "pending" && (
                           <>
                             <button
-                              className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              className="flex h-10 w-24 items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md cursor-pointer"
                               onClick={() => handleConfirm(booking._id)}
                             >
                               <TbFileLike />
                               <span>Xác nhận</span>
                             </button>
                             <button
-                              className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              className="flex h-10 w-16 items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
                               onClick={() => handleCancel(booking._id)}
                             >
                               <TbCancel />
@@ -171,7 +174,7 @@ export default function ManageBooking() {
                         {booking.status === "confirmed" &&
                           new Date() < new Date(booking.checkOut) && (
                             <button
-                              className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              className="flex h-10 w-16 items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
                               onClick={() => handleCancel(booking._id)}
                             >
                               <TbCancel />

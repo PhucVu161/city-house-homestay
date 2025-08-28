@@ -86,7 +86,7 @@ export default function RoomDetail() {
             <img
               src={`http://localhost:4000/uploads/${mainImage}`}
               alt=""
-              className="w-full h-[500px] rounded-md"
+              className="w-full h-[590px] rounded-md"
             />
             {/* Sidebar ảnh nhỏ */}
             <div className="flex items-center gap-4 relative justify-center w-full my-4">
