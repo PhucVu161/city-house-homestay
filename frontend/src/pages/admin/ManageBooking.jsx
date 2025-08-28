@@ -84,101 +84,107 @@ export default function ManageBooking() {
           </span>
         </div>
       ) : (
-        <div className="rounded-md overflow-hidden shadow mt-4">
-          <table className="w-full text-left border-collapse rounded-2xl">
-            {/* Phần header của bảng */}
-            <thead className="bg-brand-cool3 text-gray-700 font-semibold">
-              <tr>
-                <th className="p-3">Thông tin người đặt</th>
-                <th className="p-3">Thông tin phòng</th>
-                <th className="p-3">Thời gian</th>
-                <th className="p-3">Tổng tiền</th>
-                <th className="p-3">Ngày tạo</th>
-                <th className="p-3">Trạng thái</th>
-                <th className="p-3">Thao tác</th>
-              </tr>
-            </thead>
-            {/* Phần dữ liệu của bảng */}
-            <tbody>
-              {filteredBookings.map((booking) => (
-                <tr
-                  key={booking._id}
-                  className="bg-brand-light2 hover:bg-gray-50 transition"
-                >
-                  <td className="p-2">
-                    <div className="font-semibold">
-                      {booking.userId.username}
-                    </div>
-                    <div className="italic text-sm">{booking.userId.email}</div>
-                  </td>
-                  <td className="p-2">
-                    <div className="font-semibold">
-                      Phòng {booking.roomId.roomCode}
-                    </div>
-                    <div className="italic text-sm">
-                      {booking.roomId.house.address}
-                    </div>
-                  </td>
-                  <td className="p-2 text-sm">
-                    <div>
-                      Từ {dayjs(booking.checkIn).format("HH:mm, DD/MM/YYYY")}
-                    </div>
-                    <div>
-                      đến {dayjs(booking.checkOut).format("HH:mm, DD/MM/YYYY")}
-                    </div>
-                  </td>
-                  <td className="p-2 font-semibold">
-                    {booking.totalPrice.toLocaleString("vi-VN")}đ
-                  </td>
-                  <td className="p-2 text-sm">
-                    {dayjs(booking.createdAt).format("DD/MM/YYYY")}
-                  </td>
-                  <td className="p-2 text-sm">
-                    <BookingStatusLine status={booking.status} />
-                  </td>
-                  <td className="p-2 text-sm">
-                    <div className="flex gap-4">
-                      {/* Nút Chi tiết luôn hiển thị */}
-                      <button className="flex items-center gap-2 bg-blue-400 text-brand-light3 p-2 rounded-md cursor-pointer">
-                        <FaEye />
-                        <span>Chi tiết</span>
-                      </button>
-                      {/* Nếu status là pending thì hiển thị cả Xác nhận và Hủy */}
-                      {booking.status === "pending" && (
-                        <>
-                          <button
-                            className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md cursor-pointer"
-                            onClick={() => handleConfirm(booking._id)}
-                          >
-                            <TbFileLike />
-                            <span>Xác nhận</span>
-                          </button>
-                          <button
-                            className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
-                            onClick={()=>handleCancel(booking._id)}
-                          >
-                            <TbCancel />
-                            <span>Hủy</span>
-                          </button>
-                        </>
-                      )}
-                      {/* Nếu status là confirmed thì chỉ hiển thị nút Hủy */}
-                      {booking.status === "confirmed" &&
-                        new Date() < new Date(booking.checkOut) && (
-                          <button
-                            className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
-                            onClick={()=>handleCancel(booking._id)}
-                          >
-                            <TbCancel />
-                            <span>Hủy</span>
-                          </button>
-                        )}
-                    </div>
-                  </td>
+        <div>
+          <div className="text-sm text-gray-500 italic">Bạn có {filteredBookings.length} đơn</div>
+          <div className="rounded-md overflow-hidden shadow mt-4">
+            <table className="w-full text-left border-collapse rounded-2xl">
+              {/* Phần header của bảng */}
+              <thead className="bg-brand-cool3 text-gray-700 font-semibold">
+                <tr>
+                  <th className="p-3">Thông tin người đặt</th>
+                  <th className="p-3">Thông tin phòng</th>
+                  <th className="p-3">Thời gian</th>
+                  <th className="p-3">Tổng tiền</th>
+                  <th className="p-3">Ngày tạo</th>
+                  <th className="p-3">Trạng thái</th>
+                  <th className="p-3">Thao tác</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              {/* Phần dữ liệu của bảng */}
+              <tbody>
+                {filteredBookings.map((booking) => (
+                  <tr
+                    key={booking._id}
+                    className="bg-brand-light2 hover:bg-gray-50 transition"
+                  >
+                    <td className="p-2">
+                      <div className="font-semibold">
+                        {booking.userId.username}
+                      </div>
+                      <div className="italic text-sm">
+                        {booking.userId.email}
+                      </div>
+                    </td>
+                    <td className="p-2">
+                      <div className="font-semibold">
+                        Phòng {booking.roomId.roomCode}
+                      </div>
+                      <div className="italic text-sm">
+                        {booking.roomId.house.address}
+                      </div>
+                    </td>
+                    <td className="p-2 text-sm">
+                      <div>
+                        Từ {dayjs(booking.checkIn).format("HH:mm, DD/MM/YYYY")}
+                      </div>
+                      <div>
+                        đến{" "}
+                        {dayjs(booking.checkOut).format("HH:mm, DD/MM/YYYY")}
+                      </div>
+                    </td>
+                    <td className="p-2 font-semibold">
+                      {booking.totalPrice.toLocaleString("vi-VN")}đ
+                    </td>
+                    <td className="p-2 text-sm">
+                      {dayjs(booking.createdAt).format("DD/MM/YYYY")}
+                    </td>
+                    <td className="p-2 text-sm">
+                      <BookingStatusLine status={booking.status} />
+                    </td>
+                    <td className="p-2 text-sm">
+                      <div className="flex gap-4">
+                        {/* Nút Chi tiết luôn hiển thị */}
+                        <button className="flex items-center gap-2 bg-blue-400 text-brand-light3 p-2 rounded-md cursor-pointer">
+                          <FaEye />
+                          <span>Chi tiết</span>
+                        </button>
+                        {/* Nếu status là pending thì hiển thị cả Xác nhận và Hủy */}
+                        {booking.status === "pending" && (
+                          <>
+                            <button
+                              className="flex items-center gap-2 bg-brand-cool2 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              onClick={() => handleConfirm(booking._id)}
+                            >
+                              <TbFileLike />
+                              <span>Xác nhận</span>
+                            </button>
+                            <button
+                              className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              onClick={() => handleCancel(booking._id)}
+                            >
+                              <TbCancel />
+                              <span>Hủy</span>
+                            </button>
+                          </>
+                        )}
+                        {/* Nếu status là confirmed thì chỉ hiển thị nút Hủy */}
+                        {booking.status === "confirmed" &&
+                          new Date() < new Date(booking.checkOut) && (
+                            <button
+                              className="flex items-center gap-2 bg-red-400 text-brand-light3 p-2 rounded-md cursor-pointer"
+                              onClick={() => handleCancel(booking._id)}
+                            >
+                              <TbCancel />
+                              <span>Hủy</span>
+                            </button>
+                          )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
