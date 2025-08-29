@@ -20,6 +20,15 @@ export const getAllRoomTypes = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const getAllRanks = async (req, res) => {
+  try {
+    const ranks = await RoomType.find({ deletedAt: null }).select("rank -_id");
+    const rankList = ranks.map((item) => item.rank);
+    res.status(200).json(rankList);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 // Lấy chi tiết loại phòng theo ID
 export const getRoomTypeById = async (req, res) => {

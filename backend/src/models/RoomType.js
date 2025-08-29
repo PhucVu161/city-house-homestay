@@ -5,6 +5,7 @@ const roomTypeSchema = new mongoose.Schema(
     rank: {
       type: String,
       required: true,
+      unique: true,
     },
     area: {
       //tính theo m2

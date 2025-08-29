@@ -1,5 +1,29 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 import axios from "axios";
+
+export const filteredRoom = createSelector(
+  [(state) => state.room.list, (state) => state.room.filterRoom],
+  (rooms, { selectedRanks, selectedDistricts, selectedAmenities }) => {
+    if (selectedRanks?.length) {
+      rooms = rooms.filter(room => selectedRanks.includes(room.roomType.rank));
+    }
+    if (selectedDistricts?.length) {
+      rooms = rooms.filter(room => selectedDistricts.includes(room.house.district));
+    }
+    if (selectedAmenities?.length) {
+      rooms = rooms.filter(room =>
+        selectedAmenities.every(selectedAmenity =>
+          room.amenities.includes(selectedAmenity)
+        )
+      );
+    }
+    return rooms;
+  }
+);
 
 //thunk lấy danh sách các phòng
 export const fetchRooms = createAsyncThunk(
@@ -109,10 +133,33 @@ const roomSlice = createSlice({
     list: [],
     loading: false,
     error: null,
+    filterRoom: {
+      selectedRanks: [],
+      selectedDistricts: [],
+      selectedAmenities: [],
+    },
+  },
+  reducers: {
+    setSelectedRanks: (state, action) => {
+      state.filterRoom.selectedRanks = action.payload;
+    },
+    setSelectedDistricts: (state, action) => {
+      state.filterRoom.selectedDistricts = action.payload;
+    },
+    setSelectedAmenities: (state, action) => {
+      state.filterRoom.selectedAmenities = action.payload;
+    },
+    resetFilterRoom: (state) => {
+      state.filterRoom = {
+        selectedRanks: [],
+        selectedDistricts: [],
+        selectedAmenities: [],
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
-// fetch rooms
+      // fetch rooms
       .addCase(fetchRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -125,7 +172,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-// search rooms
+      // search rooms
       .addCase(searchRooms.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -138,7 +185,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-// Add room
+      // Add room
       .addCase(addRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -151,7 +198,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-// Update room
+      // Update room
       .addCase(updateRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -169,7 +216,7 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-// Delete room
+      // Delete room
       .addCase(deleteRoom.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -185,4 +232,10 @@ const roomSlice = createSlice({
   },
 });
 
+export const {
+  setSelectedRanks,
+  setSelectedDistricts,
+  setSelectedAmenities,
+  resetFilterRoom,
+} = roomSlice.actions;
 export default roomSlice.reducer;

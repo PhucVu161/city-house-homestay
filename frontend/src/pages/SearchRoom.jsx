@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Search, RoomCard, Filter } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRooms, searchRooms } from "../redux/slices/roomSlice";
+import { fetchRooms, filteredRoom, searchRooms } from "../redux/slices/roomSlice";
 import { Link, useNavigate } from "react-router";
 import {
   fetchRoomById,
   updateCurrentBooking,
 } from "../redux/slices/bookingSlice";
 import axios from "axios";
+import { BsFillHouseDashFill } from "react-icons/bs";
 
 const checkRoomAvailable = async (roomId, checkIn, checkOut) => {
   try {
@@ -27,7 +28,7 @@ const checkRoomAvailable = async (roomId, checkIn, checkOut) => {
 
 export default function SearchRoom() {
   const [priceType, setPriceType] = useState();
-  const rooms = useSelector((state) => state.room.list);
+  const rooms = useSelector(filteredRoom);
   const { bookingType, checkIn, checkOut } = useSelector(
     (state) => state.booking.currentBooking
   );
@@ -72,7 +73,7 @@ export default function SearchRoom() {
     <div className="flex flex-col">
       <Search />
       <div className="flex mx-10 mt-4 gap-4">
-        <div className="w-90 bg-brand-light rounded-2xl">
+        <div className="self-baseline w-90 bg-brand-light rounded-2xl">
           <Filter />
         </div>
         <div className="grow bg-brand-light rounded-2xl">
@@ -86,7 +87,8 @@ export default function SearchRoom() {
               <span className="p-2 rounded-md bg-gray-100">Phù hợp nhất</span>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          {rooms?.length ? 
+          (<div className="flex flex-col gap-4">
             {rooms.map((room) => (
               <div key={room._id} className="flex m-3 p-3 rounded-2xl shadow-[3px_3px_10px_-1px_gray]">
                 <Link to={`/room-detail/${room._id}`}>
@@ -138,7 +140,13 @@ export default function SearchRoom() {
                 </div>
               </div>
             ))}            
-          </div>
+          </div>) : (
+            <div className="flex flex-col items-center mt-16">
+              <div className="text-8xl text-gray-600"><BsFillHouseDashFill/></div>
+              <div className="text-2xl font-semibold">Không tìm thấy phòng.</div>
+              <div>Rất tiếc, chúng tôi không tìm thấy phòng nào phù hợp.</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

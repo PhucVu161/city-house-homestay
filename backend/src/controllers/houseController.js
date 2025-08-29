@@ -20,6 +20,16 @@ export const getAllHouses = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+export const getAllDistricts = async (req, res) => {
+  try {
+    const districts = await House.find({ deletedAt: null }).select("district -_id");
+    const districtList = districts.map((item) => item.district);
+    const uniqueDistricts = [...new Set(districtList)].sort();
+    res.status(200).json(uniqueDistricts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // Lấy chi tiết một nhà theo ID
 export const getHouseById = async (req, res) => {
