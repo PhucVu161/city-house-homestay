@@ -33,6 +33,8 @@ import { fetchCurrentUser } from "./redux/slices/authSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ScrollToTop } from "./components";
+import "@n8n/chat/style.css";
+import { createChat } from "@n8n/chat";
 
 const ProtectedRoute = ({
   isAuthenticated,
@@ -63,6 +65,30 @@ function App() {
       dispatch(fetchCurrentUser());
     }
   }, [user, token, dispatch]);
+  useEffect(() => {
+    if (!document.getElementById("n8n-chat") && user?.isAdmin !== true) { //kiểm tra chưa có và không phải admin mới tạo
+      createChat({
+        webhookUrl:
+          "http://localhost:5678/webhook/8382104f-1c71-417c-bf8b-462fffd1b956/chat",
+        initialMessages: [
+          "Xin chào bạn. Tôi là trợ lý ảo của City House Homestay. Tôi có thể giúp gì cho bạn hôm nay?",
+        ],
+        i18n: {
+          en: {
+            title: "AI City House",
+            subtitle: "Đang hoạt động",
+            footer: "",
+            getStarted: "New Conversation",
+            inputPlaceholder: "Nhập câu hỏi của bạn...",
+          },
+        },
+      });
+    }
+    return () => {// unmout
+      const el = document.getElementById("n8n-chat");
+      if (el) el.remove();
+    };
+  }, [user]);
 
   return (
     <>
