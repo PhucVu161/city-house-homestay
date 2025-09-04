@@ -9,6 +9,7 @@ import {
   fetchRoomById,
   updateCurrentBooking,
 } from "../redux/slices/bookingSlice";
+import { AMENITIES } from "../constants/amenities";
 
 export default function RoomDetail() {
   //lấy id phòng từ url và thông tin lưu trong redux
@@ -62,7 +63,9 @@ export default function RoomDetail() {
     <div className="flex flex-col bg-brand-light px-36 pt-16">
       {/* Tiêu đề */}
       <div>
-        <h1 className="text-5xl">Phòng {room.roomCode} {room.style}</h1>
+        <h1 className="text-5xl">
+          Phòng {room.roomCode} {room.style}
+        </h1>
         <div>
           <div className="flex items-center my-2 gap-1">
             <GiPositionMarker />
@@ -86,7 +89,7 @@ export default function RoomDetail() {
             <img
               src={`http://localhost:4000/uploads/${mainImage}`}
               alt=""
-              className="w-full h-[590px] rounded-md"
+              className="w-full h-[590px] rounded-md object-cover"
             />
             {/* Sidebar ảnh nhỏ */}
             <div className="flex items-center gap-4 relative justify-center w-full my-4">
@@ -115,27 +118,96 @@ export default function RoomDetail() {
             </div>
           </div>
           {/* Tiện ích phòng */}
-          <div className="text-brand-cool mt-8 border-2 border-brand-cool">
+          <div className="text-brand-cool mt-8">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">
               Tiện ích
             </h1>
-            <div></div>
+            <div className="grid grid-cols-4 gap-y-12 py-12 rounded-xl bg-[#eae6c4]">
+              {AMENITIES.filter((amenity) =>
+                room.amenities.includes(amenity.label)
+              ).map(({ label, icon }) => (
+                <div key={label} className="flex flex-col items-center">
+                  <div className="text-4xl">{icon}</div>
+                  <div>{label}</div>
+                </div>
+              ))}
+            </div>
           </div>
           {/* Mô tả phòng */}
           <div className="text-brand-cool mt-8">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">Mô tả</h1>
-            <span>{`Căn homestay này thuộc hàng phòng ${room.roomType.rank} của chúng tôi, và nằm ở vị trí ${room.house.address}. `}</span>
-            <span>{room.description}</span>
+            <div className="space-y-4">
+              <p>{`Căn homestay này thuộc hàng phòng ${room.roomType.rank} của chúng tôi, và nằm ở vị trí ${room.house.address}. `}</p>
+              <p>{room.description}</p>
+            </div>
           </div>
           {/* Mức giá phòng */}
           <div className="text-brand-cool mt-8 border-t-2 border-brand-cool/30">
-            <h1 className="my-4 font-bold text-brand-dark text-3xl">Mức giá</h1>
+            <h1 className="mt-4 font-bold text-brand-dark text-3xl">Mức giá</h1>
+            <div className="italic mt-2 mb-4">
+              Giá phòng tiêu chuẩn cho 2 người
+            </div>
+            <table className="w-full border border-separate rounded-lg">
+              <thead className="bg-brand-cool3">
+                <tr>
+                  <th className="p-4"></th>
+                  <th className="p-4">
+                    <div>Trong tuần</div>
+                    <div className="text-sm italic">(T2-T5)</div>
+                  </th>
+                  <th className="p-4">
+                    <div>Cuối tuần</div>
+                    <div className="text-sm italic">(T6-CN)</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-center text-2xl bg-[#eae6c4]">
+                <tr>
+                  <td className="p-4">
+                    <div className="text-base font-semibold">Ngày đêm</div>
+                    <div className="text-sm italic">10:00-10:00</div>
+                  </td>
+                  <td>{room.roomType.prices.weekday.allDay}</td>
+                  <td>{room.roomType.prices.weekend.allDay}</td>
+                </tr>
+                <tr>
+                  <td className="p-4">
+                    <div className="text-base font-semibold">Qua đêm</div>
+                    <div className="text-sm italic">22:00-10:00</div>
+                  </td>
+                  <td>{room.roomType.prices.weekday.halfDay}</td>
+                  <td>{room.roomType.prices.weekend.halfDay}</td>
+                </tr>
+                <tr>
+                  <td className="p-4">
+                    <div className="text-base font-semibold">Theo giờ</div>
+                    <div className="text-sm italic">1 tiếng</div>
+                  </td>
+                  <td colSpan={2}>{room.roomType.prices.hour}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           {/* Đánh giá phòng */}
           <div className="text-brand-cool mt-8 border-t-2 border-brand-cool/30">
             <h1 className="my-4 font-bold text-brand-dark text-3xl">
               Đánh giá
             </h1>
+            <div className="text-4xl">
+              <div className="flex items-end gap-3">
+                <div className="font-semibold">4.9</div>
+                <div className="text-base">336 đánh giá</div>
+              </div>
+              <div className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <MdStar key={index} className="text-amber-400" />
+                ))}
+              </div>
+            </div>
+            <div className="w-full my-8">
+              <img src="../review1.png" alt="" className="h-60 w-full" />
+              <img src="../review2.png" alt="" className="h-60 w-full" />
+            </div>
           </div>
         </div>
         {/* Form thông tin đặt phòng */}

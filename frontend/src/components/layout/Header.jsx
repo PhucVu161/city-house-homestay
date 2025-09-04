@@ -16,7 +16,7 @@ export default function Header() {
     <div className="fixed w-full text-center bg-brand-light flex justify-between items-center p-1 z-50 border-b-2 border-b-lime-700">
       <div className="flex items-center">
         <img className="w-14 aspect-square rounded-full" src="/logo.jpg" alt="" />
-        <span className="text-brand-warm font-extrabold">CITYHOUSE</span>
+        <span className="text-brand-warm text-2xl font-extrabold">CITYHOUSE</span>
       </div>
       <div className="flex gap-4">
         <div>
