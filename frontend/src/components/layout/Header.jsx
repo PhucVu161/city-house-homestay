@@ -30,7 +30,7 @@ export default function Header() {
             to="/"
             className={({ isActive }) =>
               `${
-                isActive ? "bg-brand-cool3 text-brand-warm rounded-full" : ""
+                isActive ? "bg-brand-cool3 text-brand-warm rounded-xl" : ""
               } flex items-center gap-2 p-3 hover:text-brand-warm cursor-pointer`
             }
           >
@@ -42,7 +42,7 @@ export default function Header() {
             to="/search-room"
             className={({ isActive }) =>
               `${
-                isActive ? "bg-brand-cool3 text-brand-warm rounded-full" : ""
+                isActive ? "bg-brand-cool3 text-brand-warm rounded-xl" : ""
               } flex items-center gap-2 p-3 hover:text-brand-warm cursor-pointer`
             }
           >
@@ -54,7 +54,7 @@ export default function Header() {
             to="/about"
             className={({ isActive }) =>
               `${
-                isActive ? "bg-brand-cool3 text-brand-warm rounded-full" : ""
+                isActive ? "bg-brand-cool3 text-brand-warm rounded-xl" : ""
               } flex items-center gap-2 p-3 hover:text-brand-warm cursor-pointer`
             }
           >

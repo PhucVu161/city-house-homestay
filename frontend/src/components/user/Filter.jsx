@@ -37,31 +37,31 @@ export default function Filter() {
   }
   return (
     <div className="space-y-4 p-6">
-      <div>Bộ lọc kết quả</div>
+      <div className="text-2xl">Bộ lọc kết quả</div>
       <div>
-        <div>Hạng phòng</div>
+        <div className="text-lg font-semibold">Hạng phòng</div>
         <div className="grid grid-cols-2">
           {ranks.map((rank) => (
             <label key={rank}>
-              <input type="checkbox" value={rank} name="rank" checked={selectedRanks.includes(rank)} onChange={()=>handleSelectRank(rank)} />
+              <input className="mr-2" type="checkbox" value={rank} name="rank" checked={selectedRanks.includes(rank)} onChange={()=>handleSelectRank(rank)} />
               {rank}
             </label>
           ))}          
         </div>
       </div>
       <div>
-        <div>Khu vực</div>
+        <div className="text-lg font-semibold">Khu vực</div>
         <div className="grid grid-cols-2">
           {districts.map((district) => (
             <label key={district}>
-              <input type="checkbox" value={district} name="district" checked={selectedDistricts.includes(district)} onChange={()=>handleSelectDistrict(district)} />
+              <input className="mr-2" type="checkbox" value={district} name="district" checked={selectedDistricts.includes(district)} onChange={()=>handleSelectDistrict(district)} />
               {district}
             </label>
           ))}          
         </div>
       </div>
       <div>
-        <label htmlFor="">Tiện ích</label>
+        <label htmlFor="" className="text-lg font-semibold">Tiện ích</label>
         <div className="grid grid-cols-2">
           {AMENITIES.map((amenity) => (
             <label key={amenity.label}>

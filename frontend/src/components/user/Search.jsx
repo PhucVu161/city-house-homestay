@@ -52,7 +52,7 @@ export default function Search() {
           {BOOKING_TYPES.map((type) => (
             <div
               className={`flex flex-col items-center my-2 cursor-pointer hover:text-orange-500 ${
-                type.key === bookingType ? "border-b-2 border-brand-warm" : ""
+                type.key === bookingType ? "border-b-2 border-brand-warm text-brand-warm" : ""
               }`}
               key={type.key}
               onClick={()=>handleChangeType(type)}

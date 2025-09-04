@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router';
 
 export default function Footer() {
   return (
@@ -92,19 +92,19 @@ export default function Footer() {
             <h3 className="text-xl font-semibold">Liên Kết Nhanh</h3>
             <ul className="space-y-2">
               <li>
-                <a className="hover:text-white transition">Trang Chủ</a>
+                <a href='/' className="hover:text-white transition">Trang Chủ</a>
               </li>
               <li>
-                <a className="hover:text-white transition">Đặt Phòng</a>
+                <Link to={'/search-room'} className="hover:text-white transition">Tìm Phòng</Link>
               </li>
               <li>
-                <a className="hover:text-white transition">Giới Thiệu</a>
+                <Link to={'about'} className="hover:text-white transition">Giới Thiệu</Link>
               </li>
               <li>
-                <a className="hover:text-white transition">Chính Sách</a>
+                <Link className="hover:text-white transition">Chính Sách</Link>
               </li>
               <li>
-                <a className="hover:text-white transition">Liên Hệ</a>
+                <Link className="hover:text-white transition">Liên Hệ</Link>
               </li>
             </ul>
           </div>
