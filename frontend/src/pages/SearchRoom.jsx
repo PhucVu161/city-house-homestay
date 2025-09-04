@@ -71,7 +71,7 @@ export default function SearchRoom() {
   };
   return (
     <div className="flex flex-col">
-      <Search />
+      <div className="mt-4"><Search /></div>
       <div className="flex mx-10 mt-4 gap-4">
         <div className="self-baseline w-90 bg-brand-light rounded-2xl">
           <Filter />

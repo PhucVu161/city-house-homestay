@@ -46,18 +46,19 @@ export default function Search() {
   }
   return (
     <div className="flex justify-center">
-      <div className="w-400 h-30 bg-amber-50 rounded-xl">
+      <div className="w-400 h-36 bg-amber-50 rounded-xl">
         {/* Lựa chọn loại booking */}
         <div className="flex justify-center gap-4">
           {BOOKING_TYPES.map((type) => (
             <div
-              className={`my-2 cursor-pointer hover:text-orange-500 ${
+              className={`flex flex-col items-center my-2 cursor-pointer hover:text-orange-500 ${
                 type.key === bookingType ? "border-b-2 border-brand-warm" : ""
               }`}
               key={type.key}
               onClick={()=>handleChangeType(type)}
             >
-              {type.name}
+              <div className="text-3xl">{type.icon}</div>
+              <div>{type.name}</div>
             </div>
           ))}
         </div>
