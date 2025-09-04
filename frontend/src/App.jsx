@@ -34,6 +34,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ScrollToTop } from "./components";
 import "@n8n/chat/style.css";
+import "./assets/n8n_chat.css";
 import { createChat } from "@n8n/chat";
 
 const ProtectedRoute = ({
@@ -71,7 +72,7 @@ function App() {
         webhookUrl:
           "http://localhost:5678/webhook/8382104f-1c71-417c-bf8b-462fffd1b956/chat",
         initialMessages: [
-          "Xin chào bạn. Tôi là trợ lý ảo của City House Homestay. Tôi có thể giúp gì cho bạn hôm nay?",
+          "Xin chào bạn.", "Tôi là trợ lý ảo của City House Homestay. Tôi có thể giúp gì cho bạn hôm nay?",
         ],
         i18n: {
           en: {
