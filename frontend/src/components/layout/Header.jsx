@@ -13,7 +13,7 @@ export default function Header() {
     navigate("/");
   };
   return (
-    <div className="fixed w-full text-center bg-brand-light flex justify-between items-center p-1 z-50 shadow-lg">
+    <div className="fixed w-full text-center bg-brand-light flex justify-between items-center px-6 py-2 z-50 shadow-lg">
       <div className="flex items-center">
         <img
           className="w-14 aspect-square rounded-full"
@@ -96,7 +96,7 @@ export default function Header() {
         ) : (
           <>
             <div>
-              <Link to="/login" className="hover:text-brand-warm">
+              <Link to="/login" className="py-[10px] px-5 rounded-lg border-2 text-brand-warm2 border-brand-warm2 hover:text-brand-warm">
                 Login
               </Link>
             </div>
